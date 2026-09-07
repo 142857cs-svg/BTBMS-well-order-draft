@@ -1,2 +1,2 @@
 # BTBMS-well-order-draft
-An idea that might be able to prove the well-orderedness of BTBMS
+I have an idea that might be able to prove the well-orderedness of BTBMS in ZFC+virtually extendible cardinal
