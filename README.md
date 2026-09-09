@@ -1,2 +1,2 @@
 # BTBMS-well-order-draft
-I have an idea that might be able to prove the well-orderedness of BTBMS (https://wiki.googology.top/index.php/BTBMS) in ZFC+virtually extendible cardinal
+This repository outlines an idea that may lead to a proof of the well-orderedness of BTBMS ([BTBMS](https://wiki.googology.top/index.php/BTBMS)) in ZFC augmented by the existence of a virtually extendible cardinal. The idea is motivated in part by the approach considered in [A proof of termination of BMS](https://googology.fandom.com/wiki/User_blog:ReflectingOrdinal/A_proof_of_termination_of_BMS). Related arguments also appear in arXiv:2307.04606
