@@ -3,14 +3,13 @@ This repository outlines an idea that may lead to a proof of the well-orderednes
 
 
 
-update on Sep 11, 2026: After posting these preliminary notes, I learned of [Phyrion1343/1Y-Well-Ordering-Lean](https://github.com/Phyrion1343/1Y-Well-Ordering-Lean), which appears to establish a stronger result than the one targeted here. These notes are retained as a record of a preliminary approach and do not contain a complete proof.
 
 
+### Update on related work
 
-### Remark on the foundational strength of the 1-Y proof
+On September 11, 2026, I initially believed that a recently obtained result [Phyrion1343/1Y-Well-Ordering-Lean](https://github.com/Phyrion1343/1Y-Well-Ordering-Lean) was stronger than the target considered here and might subsume it.
 
-After briefly reading the proof in [Phyrion1343/1Y-Well-Ordering-Lean](https://github.com/Phyrion1343/1Y-Well-Ordering-Lean), I suspect that the stated ZFC upper bound is substantially stronger than necessary.
+After a more careful comparison on September 14, 2026, this appears not to be the case. The result is closely related, but its statement does not seem to imply the target theorem considered in this repository.
 
-In particular, it seems plausible that the argument can be carried out in a system of roughly the strength of third-order arithmetic, or in a suitable weak set-theoretic formulation without the Power Set axiom. My intuition is that the relation $R(k,f(r),f(p),f(c))$ may be replaced by the existence of elementary embedding $L_{f(p)\times k+f(c)} \rightarrow L_{f(r)\times k+f(c)}$ with critical point $f(p)$ (or maybe $L_{f(p)\times (k+1)} \rightarrow L_{f(r)\times (k+1)}$ if $p=c$).
+Accordingly, the present approach should still be regarded as addressing a distinct open target, although I am not currently pursuing this direction further.
 
-I have not checked this reduction formally, and I am not claiming a precise proof-theoretic upper bound. This is only an observation that may be worth investigating.
