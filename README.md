@@ -11,5 +11,5 @@ On September 11, 2026, I initially believed that a recently obtained result [Phy
 
 After a more careful comparison on September 14, 2026, this appears not to be the case. The result is closely related, but its statement does not seem to imply the target theorem considered in this repository.
 
-Accordingly, the present approach should still be regarded as addressing a distinct open target, although I am not currently pursuing this direction further.
+Accordingly, the present approach should still be regarded as addressing a distinct open target.
 
