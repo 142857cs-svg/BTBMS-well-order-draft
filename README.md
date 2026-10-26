@@ -40,7 +40,7 @@ The manuscript claims
 
 $$
 \mathrm{ZFC}+\text{“}0^\#\text{ exists”}
-\ \vdash\ \operatorname{WO}(\mathscr U)
+\ \vdash\ \text{WO}(\mathscr U)
 $$
 
 for the original comparison. It also gives a decreasing rank from the
