@@ -3,7 +3,7 @@
 **Read the [38-page English paper](paper/paper.pdf).**
 The [LaTeX source and build instructions](paper/README.md) are included.
 
-This repository presents the G approach (an idea that is shown in idea.jpg, motivated in part by the approach considered in [A proof of termination of BMS](https://googology.fandom.com/wiki/User_blog:ReflectingOrdinal/A_proof_of_termination_of_BMS). Related arguments also appear in arXiv:2307.04606) to the well-ordering of the original
+This repository presents the G approach (an idea that is initially shown in [original sketch](idea.JPG), motivated in part by the approach considered in [A proof of termination of BMS](https://googology.fandom.com/wiki/User_blog:ReflectingOrdinal/A_proof_of_termination_of_BMS). Related arguments also appear in arXiv:2307.04606) to the well-ordering of the original
 finite BTBMS domain, working in ZFC + "0-sharp exists". The current paper is
 the concise edition dated **26 October 2026**, based on checkpoint v139 and
 the subsequent clarifications. It contains the proof arguments, rather than

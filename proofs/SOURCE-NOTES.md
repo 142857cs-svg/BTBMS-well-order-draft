@@ -63,8 +63,4 @@ synchronization. This synchronization introduces no further mathematical
 changes to the article or the notebook texts.
 
 The original `source-manifest.json` remains a record of the original package,
-including hashes for English guides that have since been revised. Use the
-root [RELEASE-MANIFEST.json](../RELEASE-MANIFEST.json) to check the updated
-package. It identifies the original input ZIPs and hashes every distributed
-file except itself. Checks of links, hashes and compilation are document and
-packaging checks, not an independent mathematical review.
+including hashes for English guides that have since been revised. 

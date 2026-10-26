@@ -70,7 +70,7 @@ This is a research proof manuscript, not a proof-kernel verification or an
 independent human peer review. Successful compilation and document checks
 do not establish mathematical correctness.
 
-The user reports that the originator of F circulated a separate proof on QQ
+The user reports that test_alpha0, the originator of F, circulated a separate proof on QQ
 and acknowledged the independent development of G. An exact public date and
 a stable public link have not been established here. No priority date is
 invented; the acknowledgment concerns independence, not verification of this

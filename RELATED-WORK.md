@@ -2,7 +2,7 @@
 
 ## The proof circulated via QQ
 
-**test_alpha0**, who proposed the approach denoted **F** in the research notes has
+**test_alpha0**, who proposed the approach denoted **F** in the research notes, has
 circulated a proof of BTBMS well-ordering via QQ. The repository author reports
 that test_alpha0 also acknowledges the independent development of the
 G work presented here.

@@ -31,7 +31,4 @@ The TypeScript files now included in `../paper/` pin the native definition;
 they are not a packaged reproduction of the historical experiments.
 
 See [SOURCE-NOTES.md](SOURCE-NOTES.md) for original formatting changes and
-this edition's preservation checks. The original
-[source-manifest.json](source-manifest.json) records the original upload
-snapshot. The root [RELEASE-MANIFEST.json](../RELEASE-MANIFEST.json) records
-the files in the updated package.
+this edition's preservation checks. 

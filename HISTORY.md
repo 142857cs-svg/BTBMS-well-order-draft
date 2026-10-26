@@ -37,8 +37,7 @@ This GitHub package copies the concise article release unchanged into
 `paper/`, supplies its build instructions, and updates the English navigation
 and proof overview. It makes no additional mathematical changes. The Chinese
 notebook Markdown and indices, the original source manifest and
-`RELATED-WORK.md` are preserved byte for byte. The root
-[RELEASE-MANIFEST.json](RELEASE-MANIFEST.json) records this package's contents.
+`RELATED-WORK.md` are preserved byte for byte. 
 
 The research status and attribution remain unchanged: substantive ChatGPT
 assistance is acknowledged, the independent QQ proof is credited as reported,
