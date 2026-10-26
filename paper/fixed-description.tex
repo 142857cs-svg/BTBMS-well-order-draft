@@ -1,0 +1,102 @@
+\subsection{Why the fixed selectors commute with a weak map}
+\label{sec:fixed-description}
+We supply the least-witness argument in Lemma~\ref{lem:transport}; in
+particular it applies to the entire actual map at a weak successor,
+not only to restrictions of a larger map.
+
+If the source endpoint $H$ is a limit, the actual finite witness tuple
+$w$ belongs to $L_H$. Choose a proper $L_\beta$ containing the parameters,
+$w$ and the finite tuple construction. The canonical order is extended
+only at its end, so every candidate earlier than $w$ is already in that
+small layer. Its correct hierarchy, order and relevant truth records
+fit in $L_H$ after a finite increase of $\beta$. They give a positive
+certificate that $w$ satisfies the bounded matrix and that no earlier
+tuple does. In any transitive target that passes the same check, this
+is still the global first witness: everything outside the correctly
+identified initial layer comes later. Transporting this certificate
+through $J$ proves preservation of the witness and its projections.
+Definedness in the reverse direction follows directly by positive
+elementarity of the finite existential matrix. The target need not be
+admissible or a limit.
+
+Now write $H=\lambda+n$ with $n>0$. Preservation of the finite
+successor pattern gives $V=\mu+n$, where $\mu=J(\lambda)$. Put
+\[
+ M=L_{\lambda+n-1},\qquad N=L_{\mu+n-1},\qquad e=J\restriction M.
+\]
+Lemma~\ref{lem:proper-layers} makes $e:M\prec N$ fully elementary.
+The actual $J$ is its one Def extension: if
+$X=\{z\in M:M\models\varphi(z,\bar a)\}$, then
+\begin{equation}\label{eq:4-4}
+ J(X)=\{z\in N:N\models\varphi(z,e(\bar a))\}.       
+\end{equation}
+To see this, express the defining equivalence with all quantifiers
+bounded by $M$ and $X$, and use the proper-layer identity. There is no
+assumption that $J$ itself is fully elementary.
+
+For each fixed finite layer, the true restriction of $<_L^{\rm fin}$
+is first-order definable inside that layer with its proper lower layers
+as parameters. At the limit base use small-layer first-definition
+records. At a successor, satisfaction of any particular formula over
+the last proper layer is expressed by the existence of its correct finite
+subformula table in the current layer. This defines the relation
+formula-by-formula without a set containing the current layer's own
+full truth. First definitions are then compared using the previously
+defined order. The proper-layer parameters are preserved by $e$.
+
+For an external fixed formula number $i$ and parameters $\bar a\in M$,
+let $X_i(\bar a)$ be its defined subset of $M$. There is a finite
+first-order condition $\operatorname{First}_i(\bar a)$ over $M$ saying
+that this is a new object and this description is its true first one.
+Newness excludes every old $u\in M$ with the same members. Minimality
+of the parameter tuple excludes earlier same-formula tuples. Earlier
+ordinary formula numbers give finitely many further exclusions.
+
+The two-block formula order needs an additional check. If $i=\chi_s$,
+only the $s$ shorter constructors precede it. If $i$ is in the second
+block, all finite constructors precede it, so one must say that the
+defined set is infinite. This is first-order expressible over $M$:
+at a limit base there is no finite list exhausting its members; at a
+successor use a finite list of codes in $L_\lambda$, evaluated onto $M$.
+Every actual finite list has such a code. Negating exhaustibility
+therefore excludes the entire first block. Treating that block as a
+finite initial segment would be incorrect. Full elementarity of $e$
+preserves $\operatorname{First}_i$ and hence the actual first-description
+order of objects in $\operatorname{Def}(M)$.
+
+For a fixed finite tree of set constructors over $\operatorname{Def}(M)$,
+give each node still in that layer its true first description. Old nodes
+are parameters in $M$; new nodes have the descriptions above. The claim
+that a node is the finite set of its children is a fixed bounded
+condition, translated to $M$ using their definitions. Nodes outside
+$\operatorname{Def}(M)$ are assigned their actual finite bands over the
+limit base. Different bands decide comparison; equal positive bands
+are compared by the number of distinct members and their ordered member
+lists. Every comparison descends a band, ending at a described layer
+object. Deduplication and the chosen ordering of children are finitely
+many further comparisons. Thus each particular finite tree comparison
+is equivalent to one finite first-order formula over $M$. No expression
+$J(T)$ is used for a tuple $T$ outside $\dom(J)$.
+
+Finally fix a source query, its parameters $\bar a$ and its actual
+least witness coordinates $\bar w$. Their images satisfy the target
+bounded matrix. If a target tuple $\bar v$ were a strictly earlier
+witness, choose true descriptions of this particular tuple's coordinates
+and its finitely many intermediate tree nodes. Translate its bounded
+matrix and its strict comparison with the transported source tuple to
+one first-order formula over $N$. Quantify the candidate description
+parameters. All other parameters are $e$-images of the fixed source
+descriptions. Full elementarity reflects this formula to $M$.
+Interpreting the reflected descriptions gives an actual source witness
+strictly earlier than $\bar w$, a contradiction. All first-description,
+equality and order clauses were included in the formula, so this is a
+comparison of the original witness sets, not of their auxiliary codes.
+
+Hence the selected coordinates, their projections and definedness are
+preserved. The argument works separately for every actual formula
+number and every finite arity; it needs no set of all description
+translations in the weak endpoint. Finite induction gives transport
+of all canonical terms and proves Lemma~\ref{lem:transport} without
+using Theorem~\ref{thm:certificate}. In that theorem, actual source Gen
+can therefore be used to code the complete true graph without a
+circular appeal to its own certificate.

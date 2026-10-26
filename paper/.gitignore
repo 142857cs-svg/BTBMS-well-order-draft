@@ -1,0 +1,9 @@
+# Local LaTeX build products. The published paper.pdf is intentionally tracked.
+*.aux
+*.log
+*.out
+*.toc
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+__pycache__/

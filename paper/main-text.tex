@@ -1,0 +1,1299 @@
+\section{The native system and the theorem}\label{ch:native}
+
+\subsection{Finite syntax and actual occurrences}
+A finite expression is a finite sequence of columns; a column is a finite
+sequence of entries; an entry consists of a natural-number parent address
+and a finite expression called its private height. An entry with empty
+private height is \emph{bare}. An empty top-level column is allowed.
+Private columns in an actual nonempty height are nonempty. The notation
+$p^H$ displays an entry with parent $p$ and height $H$; the superscript is
+omitted when $H$ is empty. Displayed parent addresses are one-based, while
+the computational definition uses zero-based addresses.
+
+Addresses refer to the visible column stack. On entering an entry's
+height the previously visible columns remain visible, the new private
+columns are added, and they cease to be visible on leaving that private
+height. Consequently equal integers in different private environments
+need not identify the same column occurrence. The proof always uses actual
+occurrences and their binding environments. The \emph{owner} of an entry
+is its actual containing column. The order of fields is depth first:
+column, entry, the whole height of that entry, the next entry, the next
+column. This order is used both for finite positions and for strictly
+increasing ordinal labels.
+
+The comparison of expressions is recursive lexicographic comparison:
+first compare columns, then entries in a column, and in an entry compare
+its parent address before its private height. Proper finite prefixes are
+smaller. Relative heights retain a flag distinguishing an external parent
+from an internal offset. Relative comparison compares this flag, the
+address, and then the height. In particular, a normalization must not
+discard the flag or identify unrelated private addresses.
+
+\subsection{The fundamental sequence operation}
+The native operation $M\mapsto M[n]$ is the operation in the pinned
+definition reproduced in Appendix~\ref{app:code}. Its comparison and
+normalization operations have the meanings just specified. For clarity,
+its three finite branches are as follows.
+\begin{enumerate}
+\item An expression ending in an empty top-level column loses that
+      column. The empty expression is terminal.
+\item Follow the last-entry, last-height path to the deepest bare entry.
+      If its column is a singleton and its parent is the immediately
+      containing owner, use the special rule: delete that singleton
+      private column and repeat the enclosing entry with the truncated
+      height. The exact zero-index and first-copy convention is the
+      one in \texttt{expand\_special}.
+\item Otherwise let $r$ be the root address, $t$ the tail address, and
+      $U$ the tail column before its last bare entry. Compare the whole
+      relative-height word of $U$ with the root column, deleting a
+      smaller root head, a smaller target head, or both equal heads.
+      Keep the unconsumed root suffix. For each of the $n$ copies, copy
+      the bad part with the address shift by a multiple of $t-r$, append
+      that root suffix after the shifted $U$, and substitute the next
+      copy into the distinguished rightmost hole. The root-suffix top
+      parents are kept; its private addresses are shifted. If the root
+      is the final ancestor column, substitute the hole into its final
+      private height instead of inventing a new outer window.
+\end{enumerate}
+The distinction in the last sentence is essential for ancestor roots.
+The finite loop in the appendix is an unambiguous recursive definition,
+including the case $n=0$; it is not a bounded experimental approximation.
+
+Let $I_k=\mathrm{Limit}[k]$. Here $I_0$ is a single empty column,
+$I_1=()(1)$, and higher $I_k$ are the finite singleton towers specified
+by \texttt{infinity\_FS}. Define
+\[
+ \mathscr U=\bigcup_{k<\omega}
+ \{M: I_k\longrightarrow^* M\text{ by a finite native history}\}.
+\]
+The theorem concerns this actual domain, not every parseable or merely
+scope-correct finite expression.
+
+\begin{theorem}\label{thm:main}
+Assume $\mathsf{ZFC}$ and the existence of $0^\#$. The original recursive
+comparison well-orders $\mathscr U$. There are ordinals $g'<\iota_2$ and
+a function $r:\mathscr U\to g'$ such that
+\[
+ K<M\implies r(K)<r(M),\qquad r(M[n])<r(M)
+\]
+whenever the displayed native step is nonterminal. Here
+$\iota_0<\iota_1<\iota_2$ are the first three Silver indiscernibles.
+The additional vertex may be assigned $r(\mathrm{Limit})=\iota_2$.
+\end{theorem}
+
+We prove this by constructing legal auxiliary labels for the original
+completed tables. Sections~\ref{ch:completion}--\ref{ch:descent} establish
+the one-step construction, Section~\ref{ch:initialization} supplies its
+initial inputs, and Section~\ref{ch:rank} passes to the original order.
+
+\section{The original completion}\label{ch:completion}
+Throughout, $\nu(H)$ counts columns and entries recursively, while
+$\mu(H)$ counts entries only. These are sizes of standard templates,
+not numbers of physical support rows. We write $P\pref H$ when $P$
+is obtained by recursive truncation along the rightmost branch.
+
+
+\subsection{Standard representatives, Cut, and scans}
+A physical completed table contains native entries and virtual support
+entries. Each occurrence has a standard birth template. Before computing
+a transported candidate, remove only relative virtual support with its
+actual birth/deletion witness, and then normalize with respect to the
+same external owner. A wholly virtual copied package still has a
+nonempty relative template; it is not erased merely because its global
+flags are virtual.
+
+For a visible root $r$, $C_r(H)$ is the least height legal at that root
+which is at least $H$. If transport to $r$ has an illegal external parent,
+Cut changes the first such parent to the new owner, clears that entry's
+height, and deletes the later recursive tail. It does not renormalize
+each inner layer with a different external owner. The finite first-
+difference comparison gives
+\[
+ H\le C_r(H),\quad H\le K\implies C_r(H)\le C_r(K),\quad
+ C_a C_b=C_a\quad(a<b).
+\]
+Indeed a legal height smaller than the cut candidate agrees with the
+original height until the first illegal field and must be smaller there,
+or would retain that illegal field. This proves minimality; monotonicity
+and composition follow from the nested legal classes.
+All comparisons in this statement use one fixed external owner.
+
+A request scans a root column against the whole target prefix up to the
+requesting entry. With current heads $R,T$, a smaller root is consumed
+alone (rootOnly), equality consumes both (both), and a larger root
+consumes the target alone (targetOnly). A tag records continuing strict
+coverage. Whenever a new coverage would begin, the root must equal the
+minimal legal candidate $C_r(T)$; if that candidate is missing it is
+inserted. An insertion before a root head has the same parent and a
+strictly lower height; a tail insertion is parentless. The final actual
+consumer is $\Gamma$ of the request. All requests, including virtual and
+private ones, are rescanned on the completed physical table.
+
+\begin{lemma}[Consumer preservation]\label{lem:consumers}
+In a qualified finite scan, insertion of a lower root immediately before
+an existing root, or insertion of a lower target before its existing
+right carrier followed by completion of its own needs, preserves the
+actual consumers of all old targets.
+\end{lemma}
+\begin{proof}
+For a root insertion $V<R$, an old target that skipped $R$ also skips
+$V$. If $R$ began a nonempty consumer block at $T$, then $C_r(T)=R$;
+minimality forces $V<T$, so $V$ is skipped before that block. A tail
+insertion is beyond the old scan. For a target insertion $T'<T$, let $G$
+be the old consumer of $T$. Earlier roots consumed or passed by $T'$
+are still passed by $T$. If $G$ was already covering, it remains. If
+coverage was not active, $G=C_r(T)$ and $C_r(T')\le G$. Equality opens
+coverage without removing $G$; strict inequality introduces a candidate
+below $T$, which $T$ skips. In every case $T$ reaches the same actual
+$G$. Iteration proves the assertion. 
+\end{proof}
+
+\begin{theorem}[Finite completion]\label{thm:completion}
+Fairly completing all actual requests makes only finitely many
+insertions. The result includes completed private packages and virtual
+requests.
+\end{theorem}
+\begin{proof}
+Let $D_x$ be the standard template at the birth of an actual entry $x$.
+Every later support inserted before a head has that head as its strict
+same-parent deletion witness; a tail insertion has the parentless
+deletion witness. Induction on the finite insertion history and then
+on private containment shows that support reduction always recovers
+the same $D_x$. Thus $n(x)$, the recursive number of entries of $D_x$,
+does not change. The visible root set of $x$ is also fixed; let its size
+be $q(x)$.
+
+For a fixed pair consisting of $x$ and an actual visible root, at most
+one candidate is created. Once it consumes $x$,
+Lemma~\ref{lem:consumers} preserves that occurrence as consumer despite
+all later lower insertions. It cannot be requested anew.
+Organize creation as a forest: a candidate belongs to its actual
+triggering target, and each directly private entry belongs to the
+entry whose birth template contains it. Along a candidate edge
+$(n,q)$ decreases lexicographically because Cut does not increase $n$
+and the root is earlier. Along a private edge $n$ strictly decreases.
+Every vertex has finite branching. Induction on $(n,q)\in\omega^2$
+therefore proves that each creation subtree is finite. There are only
+finitely many initial roots. Every individual scan also consumes a
+head except when it creates a candidate that immediately consumes the
+pending target. Fair rescanning consequently terminates. This uses
+well-foundedness of natural-number pairs, not of BTBMS expansion.
+The same induction gives a recursive bound by summing the finitely
+many smaller creation subtrees.
+\end{proof}
+
+\input{word-calculus.tex}
+
+\subsection{Physical identity and pruning}
+Finiteness alone does not identify an arbitrary qualified table with the
+original completion. The required identity is stronger.
+
+\begin{lemma}[Replay and minimal support]\label{lem:replay}
+Fair executions of the original insertion rules produce the same
+physical completed table. A completed truncated package is the original
+completion of its native projection if its retained whole packages have
+their original creation records and its retained support is the least
+actual $\Gamma$-closed support of the retained native packages.
+\end{lemma}
+\begin{proof}
+Use one finite completed execution as reference. A partial replay has
+only gaps bounded by the strict right carriers from that execution, or
+a parentless tail gap. At the first missing required consumer, the
+least-candidate rule forces the same reference occurrence; lower
+interposed support cannot change old consumers by
+Lemma~\ref{lem:consumers}. Induction embeds any other original execution
+in the reference creation record. If a proper completed subtable
+remained, take the first omitted creation. Its driving target and all
+earlier prerequisites would already be present, so its required
+consumer could not be omitted. This proves equality.
+
+For a truncation, replay from its native template with the retained
+external ports. The same first-gap argument keeps the replay inside
+the proposed support. Whole-package closure follows by replaying each
+retained package's internal creation history; unrelated outside
+requests cannot enter its private columns. The replay contains the
+native packages and is closed under their actual consumers, so
+minimality of the proposed support gives the reverse inclusion.
+At a final non-tail gap the retained right carrier is essential: it
+certifies the strict deletion relation of every interposed support.
+At a tail gap the corresponding certificate is parentlessness.
+\end{proof}
+
+\section{Global finite invariants and strict barriers}\label{ch:syntax}
+
+\subsection{Graded ancestor control}
+For a standard height put
+\[
+ d(\varnothing)=0,\qquad
+ d(H)=1+d(H[0][0].\mathrm{height})\quad(H\ne\varnothing).
+\]
+This is the depth of its first branch, not its maximum tree depth and
+not the depth of a physical first support row. Define the following
+finite properties.
+\begin{description}
+\item[F.] Every direct private column of an owner $q$ begins with an
+entry whose parent is at least $q$, recursively.
+\item[G.] If an entry $u$ reads an ancestor column $r$, and $t$ in $r$
+contains $u$, every height in the target prefix through $u$ has first-
+branch depth strictly below $d(\operatorname{ht}(t))$.
+\item[EA.] Let $U$ be a nonempty column prefix whose last parent is $p$,
+and let $a$ be the next entry's parent. Write $\pi_W(c)$ for the parent
+of the first head remaining after scanning the whole word $W$ against
+column $c$. Then $a$ belongs to the chain
+$p,\pi_{\mathcal H(U)}(p),\pi_{\mathcal H(U)}^2(p),\ldots$.
+\end{description}
+The first parent of a first private column is its owner. Comparing first
+branches therefore gives
+\begin{equation}\label{eq:3-1}
+ d(H)<d(K)\quad\Longrightarrow\quad H<K.                 
+\end{equation}
+Cut preserves the first branch of each retained nonempty containing
+height: its first illegal external parent cannot be the first entry
+of a private column. The first difference is reached before a later illegal parent can
+change that branch.
+
+\begin{theorem}[Finite-history invariants]\label{thm:invariants}
+Every $M\in\mathscr U$ and its original completion satisfy F, G, and EA.
+In a request reading an ancestor column, every actual consumer lies
+strictly before the containing entry in that ancestor. If a target
+$s$ is consumed at a root $r$, then $\Gamma^m(s)=r$ for some finite
+$m>0$. Equality of their heights makes every segment of this chain both.
+\end{theorem}
+\begin{proof}
+The singleton towers satisfy F and G directly and have no nontrivial
+adjacent EA requirement. Use induction on the length of the actual finite native history,
+with the scan identities proved in Section~\ref{sec:word-calculus}.
+
+Closed copies preserve parents, depths and comparisons. At a new
+general seam the preceding shifted $U$ is followed by
+$V=\operatorname{res}(R,U)$. If an entry of $V$ reads an ancestor whose
+containing head has depth $g$, its old complete root prefix had depth
+below $g$. A letter of $U$ of depth at least $g$ would already have
+consumed that prefix; hence such an entry could not remain in $V$.
+This proves G across the only new seam. Nonfinal holes retain their
+corresponding first branches. A zero final hole can lower a first
+branch only along a singleton-column, singleton-entry chain; the
+containing depth and the internal prefix depth shorten together,
+preserving the strict gap. Special repetition has the same shortened
+chain and adds only same-parent adjacency. This proves F and G
+without assuming EA of the output.
+
+For EA, transport each finite threshold word through the inverse
+comparison map of the particular copy currently being considered.
+If the scan exhausts $U$, the residual-word identities give the old
+root's remaining parent. If it stops in $U$, old EA moves that parent
+to the preceding copy boundary. The copy number decreases. On
+meeting an open ancestor, G makes the threshold word strictly lower
+than the containing head, so the scan never reads the changing tail
+inside that head. Queries inside a closed $U$ package stop at their
+own containing head before the appended $V$; this prevents a circular
+appeal to the seam currently being proved. The final zero hole has no
+later copy reading its changed tail. These cases exhaust retained
+prefixes, $U$, the seam, $V$, closed bad-part copies and private
+queries. Zero and special steps use the same ancestor bound and
+same-parent zero-length chains. This proves EA under native steps by
+ordinary induction on finite history length.
+
+For completion, a lower same-parent insertion is neutral for the
+parent of the first residual head: scanning it followed by its higher
+right carrier has the same absorption effect as that carrier. Its
+depth is no greater than the carrier's. Its private Cut is legal at
+the same common ports. Birth-record induction thus preserves F, G
+and EA under every insertion. Completion is finite by
+Theorem~\ref{thm:completion}.
+
+Finally qualified scans compose their actual consumer maps. Partition
+targets into consecutive blocks consumed by each root. Minimality and
+$C_aC_b=C_a$ identify the first consumer of every composed block;
+equality and the next strict inequality identify its end. No sorting
+of the words is assumed. Apply this composition along EA, inducting
+on actual owner and request position. It gives the stated $\Gamma$
+chain, including targetOnly terminals. Heights cannot strictly fall
+on a chain whose endpoints are equal, so such a chain consists of both
+events. At an ancestor containing head, (\ref{eq:3-1}) and G make the entire
+target and its minimal candidates strictly lower. A fresh coverage
+must therefore insert its candidate before that head, so that head
+cannot be an actual consumer. 
+\end{proof}
+
+\subsection{The candidate menu and actual barriers}
+For $g>0$ define the common-port set
+\[
+ \Pi_g(q)=\bigcap_{\substack{W\ne\varnothing\\\max d(W)<g}}
+           \operatorname{Anc}_{\pi_W}(q),
+\]
+excluding the starting point $q$. The words may include formal letters
+realizing a finite comparison pattern at the same depth; these are
+proof devices, not installed BTBMS entries. If an actual entry of
+height-depth at least $g$ reads from $q$, EA and G put its parent in
+$\Pi_g(q)$. Cut at such a port preserves F, G and EA, because every
+exit through $q$ is along the very same threshold-word chain through
+the new port. Different words' chains are not spliced together.
+
+\begin{lemma}[Candidate dichotomy]\label{lem:menu}
+For an actual active height $H$ replaced by its retained result $P_n$,
+and an actual backward query root $r$, the candidate is
+\begin{equation}\label{eq:3-2}
+                    C_r(P_n)\in\{P_n,C_r(H)\}.             
+\end{equation}
+\end{lemma}
+\begin{proof}
+Fixed old illegal cuts and zero truncations are decided before the
+changed suffix. For a general positive step there are two new
+boundaries. If the first illegal field is the last bare parent $b$,
+the preceding word $U$ is nonempty and has depth below $d(H)$.
+Both $b$ and $r$ lie on its one residual-parent chain. For $b>r$ the
+new residual parent still lies in $[r,b)$, so the old Cut is restored.
+For $b=r$, the residual root parents are all below $r$ and the shifted
+private fields are internal, so $P_n$ is exactly legal. If $H$ was
+already legal and the mother root is the owner $q$, G gives the same
+low-depth word, and $r\in\Pi_{d(H)}(q)$ makes its first residual parent
+lie in $[r,q)$; Cut again restores the old owner-bare boundary.
+Internal roots create no new illegal external parent, and an external
+legal root was already below $r$. Special positive steps delete an
+internal singleton owner-bare column and do not change the first
+illegal external field. These cases prove (\ref{eq:3-2}). 
+\end{proof}
+
+The strict-barrier assertion used below is restricted to actual
+corresponding scans: if a selected carrier satisfies $P<B<H$, then
+$P$ is a recursive prefix of $B$. It is not asserted for every height
+in an arbitrary numerical interval. The proof uses complete suffixes,
+the first actual origin of a strict carrier, and the same actual root
+window. For an internal origin the repeated native window bounds the
+entire suffix between two iterates, and recursive-prefix convexity
+gives the assertion. For an external origin the common-port chain
+identifies the same root; filling its complete window would give
+$T_n\le X<\Psi(X)\preceq T_1\le T_n$, a contradiction. Later barriers
+inherit the first barrier's prefix by interval convexity. Sections~\ref{sec:complete-windows}--\ref{sec:strict-proof} give
+the complete-window and source arguments.
+
+\input{windows.tex}
+
+For the prepared construction there are four possible carrier origins:
+old heads, returned internal support, stage-0 whole-package images,
+and arrival blocks. Old heads use the preceding assertion. Required
+internal support has smaller target size and smaller first-branch
+depth at its certified query; a larger temporary shadow is instead
+traced through its actual birth record to the smaller returned package
+or old source. A stage-0 image can be pulled back along its actual
+common-port chain, where the native root-window assertion applies.
+Arrival blocks use the following counting argument, including its
+empty-prefix case.
+
+\begin{lemma}[The empty-prefix interval case]\label{lem:empty-prefix}
+Let $H\to P_n$ be a general positive change in a legal private height.
+If $P_n<B<H$, then the recursive entry count satisfies
+$\mu(B)\ge\mu(H)$. Therefore a carrier originating in a proper internal
+height of $H$, followed by Cut and transport, cannot lie in that interval.
+\end{lemma}
+\begin{proof}
+When the deepest tail prefix $U$ is nonempty, remove the final bare
+entry and call the resulting common recursive prefix $E$. Then
+$\mu(E)=\mu(H)-1$ and $E\preceq P_n,H$. When $U$ is empty, delete its
+whole singleton-bare column; the same entry-count equality holds.
+By F the last bare parent is at least the private owner. Equality
+would make this a special step, so the present general root is an
+earlier nonempty direct private column. Scanning it against empty
+$U$ leaves a nonempty root suffix. Every positive step inserts a
+nonempty column at the deleted position, and $E\prec P_n$.
+
+Recursive-prefix interval convexity now gives $E\prec B$ in both
+cases. At this private position a strict extension adds an entry,
+since a private column cannot be empty. Hence
+$\mu(B)\ge\mu(E)+1=\mu(H)$. An internal arrival source $\eta$ instead
+gives $\mu(B)\le\mu(\operatorname{ht}(\eta))<\mu(H)$, a contradiction.
+The source inequality also holds for a virtual arrival head by tracing
+its genuine birth record. Counting columns as well as entries would
+remove two objects in the empty-$U$ case and restore at least two;
+one must not retain the entry-count ``minus one'' formula in that
+different convention. 
+\end{proof}
+
+These arguments prove the strict-barrier hypothesis for all four
+actual source classes. Connection records must first be followed to
+their actual Init source; an arbitrary intermediate connection head
+is not substituted for the original query.
+
+\section{One fixed canonical system and its low certificates}\label{ch:canonical}
+
+\subsection{The order and the operations}
+Unless explicitly discussing the wider convention, ``positive
+elementary'' means elementary for formulas $\exists y\,\delta$ with
+$\delta$ bounded, and their finite tuple versions. Write this class as
+$\mathcal E$. This fixed convention is used both for incoming maps
+and for natural D4 inclusions.
+
+At every passage from $L_\alpha$ to $\operatorname{Def}(L_\alpha)$,
+retain the old order and order new objects by their earliest definition
+code. The codes have two successive blocks. The first block consists
+of the literal finite-set constructors
+\[
+ \chi_m(x;y_0,\ldots,y_{m-1})\equiv
+ x=y_0\lor\cdots\lor x=y_{m-1},
+\]
+with the false formula for $m=0$, ordered first by $m$ and then
+lexicographically by the old order on parameters. The second block
+contains the other first-order formulas in a fixed syntactic order,
+then their parameter tuples. At limits take the union of the earlier
+orders. Denote this one global order by $<_L^{\rm fin}$.
+
+For each existential bounded formula, select the least \emph{complete
+witness tuple}, in its fixed ordinary set-theoretic encoding, and
+project to the prescribed output. This defines the fixed canonical
+operations and their finite-term hull $\Hull_t(A)$ in $L_t$. Define
+\[
+ \Gen(p,t)\iff L_t=\Hull_t(p+1),\qquad
+ \Cut(p,c;t)\iff\Hull_t(p\cup\{c\})\cap c=p.
+\]
+Here $p+1$ includes $p$ itself; $p\cup\{c\}$ contains all ordinals
+below $p$ and $c$, not $p$ as an additional generator. The graph used
+for a request is the inverse transitive collapse of this specified
+hull, with its required exact source. The order is never changed
+during reflection. 
+
+\subsection{Coding a weak finite successor level}
+Write a nonlimit endpoint as $t=\lambda+n$, with $\lambda>\omega$
+limit and $0<n<\omega$, and put $A=L_\lambda$. Finite codes in $A$
+describe the objects in each of the $n$ successive Def layers. At a
+successor, a code specifies a formula and finitely many earlier codes;
+equality and membership are checked using the preceding layer's
+correct satisfaction relation. Finite assignments are coded flatly,
+so their overhead does not grow with the number of coordinates.
+
+There is a fixed finite overhead for each of the layer-identification,
+finite-evaluation and finite-truth constructions. A limit absorbs this
+overhead. Thus the required fields can be separately supplied at the
+next level; their ordinary joint tuple need not belong to that level.
+Correctness is proved externally by induction on the actual Def
+construction, with bounded verification of each recursive step.
+The coding construction below keeps truth for proper layers separate
+from truth for the endpoint itself. No assertion that $\operatorname{Sat}(L_t)$ always
+belongs to $L_{t+1}$ is made.
+
+\input{truth-coding.tex}
+
+\begin{lemma}[Finite sets and overflowing tuples]\label{lem:finite-order}
+The actual $<_L^{\rm fin}$ comparison of all finite-set trees over
+$L_t$ has a correct boundedly checked code table in $L_{t+1}$. This
+includes trees with arbitrarily large finite height above the last
+layer of $L_t$.
+\end{lemma}
+\begin{proof}
+A new finite set $X$ at a Def stage has an earliest direct constructor
+with $|X|$ distinct parameters. No shorter constructor defines it;
+the least list of that length is its increasing member list. All
+other formulas come later. Consequently two new finite sets at the
+same stage are ordered by cardinality and then by their increasing
+member lists. Different stages are ordered by stage.
+
+Represent a tree over $L_t$ by a finite $A$-code. A value lying in
+$L_t$ uses the correct layer evaluation and layer order. A value
+outside $L_t$ lies at a positive finite band above the base. Unequal
+bands decide comparison. At equal bands the values are finite sets;
+deduplicate by actual equality and compare their member lists. Each
+member lies in a strictly lower band, so this recursion terminates.
+A finite trace of all these comparisons has only $A$-codes and
+natural numbers as fields and is itself in $A$. Its local checks
+are bounded. Conversely induction on bands makes a successful trace
+correct. Bounded separation over the code domain in $L_{t+1}$ gives
+the complete equality and order tables, with both directions of the
+checking equivalence. The objects compared are the original sets,
+not their low codes. 
+\end{proof}
+
+\begin{theorem}[Uniform low canonical certificate]\label{thm:certificate}
+For the fixed order above, Gen and the canonical hull, cut and exact
+graph clauses of actual legal incoming maps at target $t$ have correct
+low representations
+at the required tight level $L_{t+1}$. The check is sound for newly
+quantified candidates as well as covering true old graphs. At a limit
+target the corresponding limit-level construction gives the same
+conclusion.
+\end{theorem}
+\begin{proof}
+Let $\Delta_t(i,\bar a,\bar b)$ be the correct bounded-matrix check on
+codes of parameter and witness coordinates. Form, by the fixed
+ordinary tuple format, a tree code $\widehat T_i(\bar b)$ for the
+complete actual witness tuple. By Lemma~\ref{lem:finite-order}, its
+minimality is the bounded assertion
+\begin{equation}\label{eq:4-1}
+ \Delta_t(i,\bar a,\bar b)\ \wedge\
+ \forall\bar d\in A\,
+ \bigl(\Delta_t(i,\bar a,\bar d)\Rightarrow
+ \neg O_t(\widehat T_i(\bar d),\widehat T_i(\bar b))\bigr),       
+\end{equation}
+where only valid codes of the prescribed arity are used. The code
+evaluation is onto the actual layer, so (\ref{eq:4-1}) quantifies over every
+actual witness tuple. Bounded separation gives the full selector
+table. Finite term computations give the full term table in the same
+level. From it, the codes of elements generated by the required
+seeds are exactly those with a finite correct computation.
+
+For a candidate graph, verify the source and target structures, the
+membership isomorphism, the stipulated elementarity, the critical
+point, and equality of its image codes with those hull codes. Since
+the source is transitive, this image equality says precisely that
+the candidate is the inverse collapse of the specified hull. It
+also gives the cut and the required exact domain. Each of these
+checks is bidirectional, so a false new candidate cannot pass by
+supplying a spurious selection table. 
+
+For coverage of the actual incoming graphs used here, let
+$J:L_h\to L_t$ have critical point $p$ and $J(p)=c$. The actual field
+order gives $h<c<t$, so the source is a small structure below the
+receiving column. Its actual
+terminal source is an entry of column $p$, so it satisfies $\Gen(p,h)$.
+Lemma~\ref{lem:transport}, whose proof uses proper-layer elementarity
+and no low certificate for $J$, identifies the value of each source
+term with the same target term. Code a pair in the graph if it has
+these two evaluations of one finite term over corresponding generators.
+Every source element has such a term. Different descriptions of the
+same source element have the same target value because $J$ is an
+actual function preserving those computations. Thus the code covers
+the entire actual graph, not merely a subgraph. Conversely every pair
+so coded is a pair of $J$.
+
+This construction uses bounded separation on the correct term tables;
+the graph code belongs to $L_{t+1}$. It does not assert that the whole
+ordinary function graph belongs there. The same selector and term
+tables directly check Gen. For an arbitrary newly quantified graph,
+totality and all the preceding semantic checks remain mandatory;
+source Gen is not a substitute for soundness of those checks.
+
+At a limit target, each finite computation belongs to a proper layer
+with enough finite coding room. The union of their correct descriptions
+is definable over $L_t$ and hence has its code in $L_{t+1}$. This supplies
+the same selector, term and generated-graph checks. No unrestricted
+existence theorem for a weak hull is needed: the graphs whose coverage
+is used are the actual legal incoming graphs and the generated
+restrictions constructed in the proof.
+\end{proof}
+
+\subsection{Elementarity and transport}
+Fix one formula convention throughout. The narrow convention is
+$\mathcal E=\exists\Delta_0$. The wider convention $B\Sigma_1$ is
+closure of bounded formulas under finite conjunction, disjunction,
+bounded quantification and existential quantification. At a weak
+endpoint these must not be silently identified by prenex conversion.
+For the narrow convention correct partial truth gives the graph
+check. For the wider convention use, for every formula code, a finite
+correct table for that formula and its subformulas. The syntax is
+``for each code there exists its finite correct table,'' not an
+unjustified assertion of a single total truth table in the weak level.
+Section~\ref{sec:truth-coding} gives these two checks separately.
+
+\begin{lemma}[Actual finite-term transport]\label{lem:transport}
+An actual positive elementary map $J:L_H\to L_V$ preserves the fixed
+finite canonical computations, including at finite successor endpoints.
+If $p=\operatorname{crit}(J)$, $J(p)=c$, $p<g<H$, and $\Gen(p,g)$,
+then
+\begin{equation}\label{eq:4-2}
+ J''L_g=\Hull_{J(g)}(p\cup\{c\}),
+ \qquad J\restriction L_g\text{ is its exact inverse collapse}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Proper layers and their relative truth are preserved by layer
+identification. At a successor endpoint, interpret the finite
+definition codes and their least descriptions over the last proper
+layer. Actual comparisons of overflowing finite constructors reduce
+to the finite tree comparisons of Lemma~\ref{lem:finite-order}.
+Those comparisons have fixed first-order interpretations over the
+last proper layer, where the actual restriction has full
+elementarity. Thus the least description and its specified projection
+are preserved. The fixed-description argument is given in
+Section~\ref{sec:fixed-description}. Induction on finite term length
+then gives the assertion.
+
+For (\ref{eq:4-2}), every element of $L_g$ is a finite canonical term from
+$p+1$, by the expressly assumed source Gen. Its image is that term
+from $p\cup\{c\}$. Conversely each such target term is transported
+from the same source term, with definedness reflected by
+elementarity. This gives both inclusions and identifies the inverse
+collapse. Its source is exactly $L_g$. We use $g<H$ throughout;
+$J(H)$ is never formed. 
+\end{proof}
+
+Two maps from the same actual canonical source that agree on its
+specified generators therefore agree on all finite terms. This is
+the map identity used along actual $\Gamma$ chains. It does not
+identify maps with different parent columns. When a whole package
+is transported, its new external incoming edge is the restriction
+in (\ref{eq:4-2}); the transported old incoming edge has a different role.
+
+\input{fixed-description.tex}
+
+\section{Legal labels and the actual work models}\label{ch:models}
+
+\subsection{The labelling predicate}
+A legal labelling assigns ordinals above $\omega$ to every actual
+column and entry of $C_{\rm original}(M)$, increasing in the stated
+depth-first field order. It assigns each parented entry $u$ in column
+$c$, with parent column $p$ and actual terminal consumer $G$, its
+canonical map
+\[
+ J_u:L_g\longrightarrow_{\mathcal E}L_t,
+ \quad g=\ell(G),\quad t=\ell(u),\quad
+ \operatorname{crit}(J_u)=\ell(p),\quad J_u(\ell(p))=\ell(c).
+\]
+The graph is the specified inverse hull collapse. Gen is required of
+every entry relative to its owner. A nonempty private height has
+the original D4 condition
+\begin{equation}\label{eq:5-1}
+                 L_{\ell(u)}\prec_{\mathcal E}L_{w(u)},       
+\end{equation}
+where $w(u)$ is its last \emph{direct} private-column label, not the
+deepest tip.
+
+The fully completed scans determine the remaining conditions. For
+proper roots $r<g$, rootOnly requires $J_u(r)<s$ and the complete
+source package to be in the domain with all its images below the
+current target $s$; both requires $J_u(r)=s$ and equality of the
+entire corresponding private package; targetOnly requires $J_u(r)$
+above $s$ and all its private fields. At a proper coverage opening,
+the root is the least ordinal whose image strictly exceeds the
+opening target. A persistent tag opened while more than one target
+remained requires every ordinal below $g$ to have image below that
+opening target. The corrected convention ignores the bookkeeping
+reset of a final both event in this persistence test. The exact
+domain $L_g$ is required at every actual terminal, including
+targetOnly. At the terminal itself one does not evaluate $J_u(g)$.
+Nonfinal resets still count. All these clauses are checked after
+completion and an independent rescan, on virtual as well as native entries.
+
+The maximum of all labels is denoted $\rho(C)$; it is zero for an
+empty terminal table. The predicate just described is an external
+set-theoretic predicate on finite syntax, labels and actual graphs.
+The low certificates represent its particular internal instances;
+they do not redefine truth to mean merely that an unchecked object
+calls itself a certificate.
+
+\Needspace{10\baselineskip}
+\subsection{Strength of columns and admissibility of non-bare items}
+\begin{lemma}\label{lem:strong-column}
+An actual critical map with critical column $p$ and receiving column
+$c$ gives the natural full elementary inclusion $L_p\prec L_c$.
+Both layers satisfy KP, full Separation and full Collection. Every
+actual nonempty direct private column has this strength. A non-bare
+item layer is admissible by its strict D4 relation.
+\end{lemma}
+\begin{proof}
+The layer-identification induction fixes every set below the critical
+column, not just every ordinal: $J\restriction L_p=\mathrm{id}$.
+Boundedly relativize any first-order formula to the correct layer
+object. Its transported interpretation is the corresponding
+relative formula at $L_c$. This yields natural full elementarity.
+See the layer-identification construction in
+Section~\ref{sec:truth-coding}.
+
+If $L_p$ satisfies $\forall x\in A\,\exists y\,\varphi(x,y,u)$,
+the higher $L_c$ sees the set $L_p$ itself as a set containing
+witnesses for all $x\in A$. Full elementarity reflects the existence
+of a collecting set to $L_p$. For full Separation, first form the
+defined subset in $\operatorname{Def}(L_p)\subset L_c$, then reflect
+its existence. The elementary basic closures give KP, and each
+axiom instance transfers to $L_c$. No Power Set axiom is required.
+
+An actual nonempty private column has a parented entry in its
+standard birth row. Completion retains that entry. Its actual
+critical map therefore proves the preceding assertion for that
+receiving column. Finally the strict natural D4 relation at a
+non-bare item gives its admissibility by the witness-collection argument below. This is not an admissibility requirement on
+every bare item.
+\end{proof}
+
+To justify the last assertion, suppose $L_t\prec_{\mathcal E}L_w$
+is the natural D4 inclusion and $L_w$ has Collection. If
+$L_t\models\forall x\in A\,\exists y\,\delta(x,y,z)$ with $\delta$
+bounded, then $L_w$ has witnesses already in the set $L_t$.
+Collection in $L_w$ gives a bounded collecting set; the assertion that
+such a set exists is positive and reflects to $L_t$. Bounded Separation
+and the elementary basic axioms hold in every relevant limit layer.
+Thus $L_t$ satisfies KP. The argument uses $t<w$ and the actual D4
+inclusion, and does not apply to an arbitrary bare endpoint.
+
+\begin{lemma}[Matching a strong work level]\label{lem:work}
+Every use of small-structure hull construction in the current
+argument has a work level with the required Collection strength
+and the actual elementary relations to its item levels.
+\end{lemma}
+\begin{proof}
+There are two uses. If the work model is the original
+$M=L_{w(R)}$ of a nonempty private height, retain that very model and
+the old relation $L_\kappa\prec_{\mathcal E}M$. Its strength follows
+from Lemma~\ref{lem:strong-column}. It is not legitimate to replace
+$M$ by an arbitrary larger level and keep the old relation without
+proof.
+
+For a common auxiliary level, the original supplying map
+$J:L_H\to L_V$ has critical column $a$ and $J(a)=c$. The finite low
+records $D_i\in L_a$ and open-item relations
+$L_{t_i}\prec_{\mathcal E}L_a$ have already been supplied. With
+$T=\mathrm{KP}+\mathrm{Separation}+\mathrm{Collection}$, reflect the
+single statement
+\begin{equation}\label{eq:5-2}
+ \exists W\ [\beta<W<c\ \wedge\ \bigwedge_i D_i\in L_W
+ \ \wedge\ \bigwedge_i L_{t_i}\prec_{\mathcal E}L_W
+ \ \wedge\ L_W\models T].                               
+\end{equation}
+The high witness is $W=a$. Correct truth for the small structure
+$L_a$ is available in $L_c$, since the distinct critical and image
+columns are limits with enough finite room. The recursive axiom
+scheme is checked over formula codes in $\omega$. The parameters
+are fixed below $a$. The same $J$ gives a witness $W<a$, together
+with every displayed relation. The work-level endpoint certificate
+may remain in $L_a$ rather than $L_W$. 
+
+For completeness, the small-structure transitivity argument used in
+these models is the following. An element of a hull generated by
+$d+1$ has a finite single-valued positive definition from parameters
+of hereditary size at most $|d|$. In the strong work model take a
+small full elementary substructure of a sufficiently large set
+structure containing the witnesses and the parameters' transitive
+closure. Collapse it. Bounded absoluteness and uniqueness identify
+the collapsed output with the original output; hence the output's
+hereditary size is at most $|d|$. An elementary hull containing
+$d+1$ then contains a surjection $d\twoheadrightarrow x$ for every
+nonempty $x$ in the hull, and contains every value of that function.
+It is transitive. Only after this argument is its collapse identified
+with a natural inclusion. 
+\end{proof}
+
+\subsection{Restricting a codomain and collecting an actual graph}
+If a positive map's image lies in a transitive sublevel $L_\rho$ of
+its target, it remains narrow positive elementary into $L_\rho$:
+source witnesses map into $L_\rho$, and witnesses in $L_\rho$ are
+upward absolute to the larger target. In the wider convention a
+bounded universal may require Collection. The actual protected
+stopping sources are non-bare, hence admissible. In such a source
+each $B\Sigma_1$ formula can be normalized by collecting bounded
+families of existential witnesses. The normalized existential
+formula implies the original formula in every transitive target.
+Transport its witness to $L_\rho$ for the forward direction; use
+upward absoluteness for the reverse. The target need not be
+admissible. This proves the restriction used at stopping points.
+
+Whole function graphs are collected only in a verified admissible
+non-bare item layer $L_u$. The source is a small structure there and
+has its correct finite-term table there. The target evaluation in
+the limit $L_u$ has a correct single-valued positive definition.
+Lemma~\ref{lem:transport} gives totality and uniqueness. Then
+$\Sigma_1$ Collection and $\Delta_1$ Separation put the entire graph
+in $L_u$ and give its ordinal-image supremum strictly below $u$.
+This is a separate operation from low coding at a weak successor
+layer. 
+
+\begin{corollary}[The certificate is in the actual reflection level]
+Let $D$ be a true finite record used in an actual reflection in $L_V$,
+and suppose every internal graph target $t_i$ is strictly below $V$.
+Its complete correct check is available in $L_V$, including the case
+$t_i+1=V$. A new candidate satisfying the reflected check is legal
+for the same fixed canonical system.
+\end{corollary}
+\begin{proof}
+Theorem~\ref{thm:certificate} places each internal graph's data in
+$L_{t_i+1}\subseteq L_V$. Finite fields are represented by low codes
+or separately quantified objects, so no boundary pairing closure
+is assumed. Scan, parent, exact-domain and package correspondence
+conditions are bounded checks on the correct data. D4 and open-item
+stability use the matching elementarity convention. Low-side closed
+certificates are reconstructed below the receiving column, whose
+strength was proved above. The supplier $J$ itself and its ambient
+domain endpoint are not internal fields of $D$. For the wide
+convention retain the per-formula finite-table quantifiers.
+Coverage and soundness follow component by component. 
+\end{proof}
+
+\section{Common Point supply and installation}\label{ch:point}
+
+\subsection{What a Point asserts}
+A Point for a finite standard target $P$ at owner $a$ consists of an
+entry label $\rho$, its fully completed private table $T$, actual
+internal incoming maps, correct certificates, and the necessary
+external support $\Delta$. It asserts the correct native projection,
+whole-package identities, scope, order, Gen, D4 when nonempty, and
+all actual scan conditions. The external incoming edge of the new
+entry is supplied at installation, from its actual consumer; it is
+not confused with an incoming edge of the source package.
+
+An intrinsic Point asserts these internal conditions before that
+new external edge has been installed. The return value contains
+the actual source occurrences and support maps, not just a drawing
+of a private table. If a call enters a more external containing
+frame, all newly internal support, labels and certificates are
+quantified together again. A previous witness can prove existence
+of a high configuration; its arbitrary chosen values are not new
+fixed input requirements.
+
+The admissible working environment consists of the current legal
+source, already supplied low connection records, closed proper
+packages with their real graphs, the finite set of old open-terminal
+prefix constraints, actual lower bounds, and the operation's
+permission. The supply theorem does not confer that permission.
+
+\subsection{Sharing a source and stopping at a real bound}
+For a proper strict coverage opened at root $g$ and target $u$, the
+least-overshoot condition gives
+\[
+ g=\min\{\alpha<\gamma:J(\alpha)>u\}.
+\]
+Both entries are non-bare. Since $g$ is a limit, for $\alpha<g$,
+$J(\alpha)<J(\alpha+1)\le u$. The actual $\Gamma$ chain from the
+target back to that root composes to $J\restriction L_g$, by the
+same finite source descriptions. Its final non-bare map has its
+graph internally collected at $L_u$, so
+\begin{equation}\label{eq:6-1}
+                         \sup J[g]<u.                     
+\end{equation}
+For finitely many readers of the same actual source, all these
+images are bounded by the same final actual map. Choose the stopping
+label above that bound and the genuine finite predecessor bounds.
+No claim of cofinality for every intermediate image is needed.
+This supplies shared lower bounds without making different choices
+for one source. The same restriction identity is used for all occurrences of one
+actual source; different parent columns are not identified.
+
+\input{point-details.tex}
+
+\subsection{The simultaneous induction}
+\begin{theorem}[Common Point]\label{thm:point}
+In the qualified working environment, actual active targets and
+recursive-prefix targets admit simultaneous Point supply and
+installation, with necessary non-bare owner support, all retained
+readers, and all open-terminal prefix constraints preserved.
+\end{theorem}
+\begin{proof}
+Use strong induction on the finite size $\nu(P)$ of the standard
+target. The internal target of a nontrivial call is a proper
+private subheight, so its size is smaller. The assertion includes
+the full return value and installation; assuming only an uninstalled
+internal diagram would be insufficient.
+
+Empty heights and deletion of whole tails use the whole-entry
+downward statement of the old non-bare carrier, or retain an existing
+bare correspondence. Recursive-prefix calls use the same statement
+after constructing their last retained internal target. A genuinely
+new internal target is smaller, so the induction supplies its table,
+support, actual maps and certificates. Old closed packages are
+reused. Every necessary support template is also smaller than $P$;
+at its certified query it is exactly legal and has lower first-
+branch depth. Temporary larger shadows are traced to their actual
+birth sources rather than used as new induction targets.
+
+For a backward main query use the complete classification: parentless
+carrier, equal height, unchanged candidate, old persistent coverage,
+renewed persistent shadow, or an exact strict cut. An unchanged
+candidate retains the old \emph{actual} consumer even if there was
+no separately present minimal-candidate head. Persistent coverage
+stops at its actual carrier. A strict barrier is a prefix carrier by
+Section~\ref{ch:syntax} and uses prefix supply. An exact nonprefix
+query continues along the actual old $\Gamma$ route, or through a
+real low connection until its Init record. This route uses earlier
+actual columns or earlier connection copies.
+
+The crucial simultaneous invariant is the old graph's complete
+constraint on its terminal prefix, even while the terminal's new
+private height is open. If an insertion is only on the root side,
+its whole package is below its right carrier, and the old proper
+image bound (or terminal codomain bound) pays the new rootOnly
+events. If an insertion is on the target side with a proper source
+consumer, its actual $\Gamma$ chain identifies the old map's
+restriction; equality transports one whole source package, while
+coverage uses (\ref{eq:6-1}). If the consumer is the terminal root, use the
+whole-domain version of the coverage bound, never the undefined
+value of the domain endpoint. Multiple readers use the same source
+and the common stopping bound. These checks refer only to closed
+proper packages and the real old maps, not to the terminal's
+unfinished new height. This proves the invariant. The installation argument in
+Section~\ref{sec:prefix-installation} explains the source-prefix
+synchronization used here.
+
+Consequently when smaller calls return the necessary owner support,
+that support already has actual proper both sources in the larger
+old graph. Its source certificates lie in the domain and its target
+data are the genuine images. One does not now ask for the inverse
+image of an arbitrarily preselected support. Carry the entire
+finite old route and real connections from the start; a later move
+to an earlier strict carrier becomes prefix supply. The internal
+table can therefore be assembled into a true intrinsic high Point.
+Keep the old outside entry label and its Gen; restrict D4 to the
+new last direct private column. Correct certificates exist by
+Section~\ref{ch:models}. Reflect the whole existence statement with
+the actual finite lower bound through the old natural inclusion
+and, when needed, the actual old graph. This supplies the source
+Point above that bound. It does not require the target to be a
+prefix of the old height. The precise common-source reflection is
+Proposition~\ref{prop:common-source}.
+
+On return, transport a source entry and its complete private package
+together. Lemma~\ref{lem:transport} supplies its new incoming
+restriction and exact domain. Internal old edges are transported
+in their own roles. Proper readers are identified on the same
+finite source terms; coverage uses the internal graph bounds and
+the justified codomain restriction. Retain the old terminal-prefix
+constraints for all containing open calls. Freeze closed packages,
+replay their creation records and prune to the least actual support.
+Lemma~\ref{lem:replay} then identifies the result with the original
+completed target.
+
+There is no circular termination argument. Smaller target calls
+decrease $\nu$; same-size main travel decreases actual column or
+connection-copy position; synchronization in a fixed prefix pays
+successive finite gaps. None of these measures is future native
+expansion. Internal witnesses are jointly reselected on entering an
+outer frame. This completes the induction. The smaller-support and synchronization lemmas above account for
+all auxiliary calls, including non-bare owner prefixes.
+\end{proof}
+
+\section{Every native step lowers an arbitrary legal source}\label{ch:descent}
+
+\subsection{Preparation and one-map supply}
+For a general native step freeze the original completed last request.
+Write its supplier as
+\[
+ J_*:L_h\longrightarrow_{\mathcal E}L_v,
+ \qquad \operatorname{crit}(J_*)=a,\qquad J_*(a)=c.
+\]
+Stage 0 is permitted only if this frozen request contains rootOnly.
+It transports original closed packages, and their continuous whole
+images, into the required proper gaps. If a root lies in an ancestor
+column, Theorem~\ref{thm:invariants} places its actual consumer before
+the containing entry. Thus every source package ends before the
+original tail column $c$. Each successive transport has a source
+below that same fixed column. It never first raises an internal
+piece and then raises its already modified enclosing package.
+Every operation pays a gap in the finite original proper-root prefix,
+which does not grow. This proves finite preparation and its bound.
+
+Stage 1 uses only $J_*$. Let $P$ be the prepared root-prefix boundary
+and $Q$ the tail-prefix boundary. The record $S(X)$ contains the
+closed side packages, actual old graphs and consumers, and the
+old data of open entries. Side fields above $a$ are quantified,
+not frozen. A connection $R(X,Y)$ additionally contains every direct
+incoming edge of $Y$, its private conditions and the open-entry
+stability relations to its right column. Init records the first
+boundary's actual incoming edges. Terminal targetOnly cases retain
+their exact domain equations. No terminal package crossing $h$ is
+wrongly put into the domain of $J_*$.
+
+The prepared source gives true high witnesses for $R(P,Q)$ and
+Init$(P)$. Closed low-side certificates lie in $L_c$, and right-side
+certificates lie in the actual $L_v$, including tight successor
+cases. Reflect the finite connection statement along $J_*$ to
+insert the first low boundary. To insert the next, keep each
+already supplied low record and its actual relation $R(A_i,P)$;
+the high witness uses $P$ as the next boundary and $Q$ on its right.
+Repeat finitely many times, then apply the final cap statement to
+put the required closed records in $L_a$. Retaining $R(A_i,P)$
+also preserves stability of every open item to $L_a$. Apply
+Lemma~\ref{lem:work} to obtain a common $W<a$. Now discard the
+original high supplier and high data. The remaining real low
+connections and Init carry all later uses. The finite connection formulas are written out below; their
+certificates are supplied by Theorem~\ref{thm:certificate}.
+
+\input{connection-details.tex}
+
+\subsection{Permission before Point construction}
+The stage-2 permission concerns all adjacent native truncations
+$M[n+1]\to M[n]$, on their actual completed tables. If they all
+preserve every retained complete $\Gamma$, stage 2 must create no
+new labels, including temporary Point labels.
+
+There is a finite syntactic dichotomy. Remove low-depth letters
+from a scan: they cannot consume a high-depth target, cannot first
+open coverage at a high root because their minimal candidate still
+has low depth, and cannot remove a high root without a high target.
+Thus the high-depth consumer skeleton remains. For a positive
+active result, either an exact active request has no old sustained
+coverage, or all active requests have candidate retention or old
+coverage. In the first case the finitely many old and preparation
+templates have bounded size, whereas the positive copy targets
+grow unboundedly. Choose $N$ beyond that bound. The strict-barrier
+classification excludes an intermediate prepared carrier, so the
+actual completions at $N,N+1$ have different exact consumer
+templates. This is a concrete adjacent change witness. In the
+second case the finite scans preserve the actual old consumers for
+all positive indices. Finally compute and replay the actual
+zero-index completion separately. A change gives the $0/1$
+witness; no change gives universal preservation. The zero case
+cannot use an unpruned frozen prefix in place of its actual $\Gamma$.
+This proves the permission dichotomy before any stage-2 Point is used.
+
+\begin{theorem}[Arbitrary-source descent]\label{thm:descent}
+Let $M\in\mathscr U$ be nonterminal and let $C$ be any current legal
+labelling for the fixed canonical system. For every $n<\omega$
+there is a legal labelling $C'$ of $C_{\rm original}(M[n])$ with
+\begin{equation}\label{eq:7-1}
+                              \rho(C')<\rho(C).             
+\end{equation}
+No extra condition says that $C$ must have been selected by a
+particular preceding step.
+\end{theorem}
+\begin{proof}
+In the universal-preservation general case, stage 1 has supplied
+the closed branches, arrival blocks, old consumer packages, actual
+connections and old open labels. Return from the inner active call
+outward using only those fields, retaining the open label, Gen and
+old map. Restrict D4 to the new direct last column or remove it
+when the height becomes empty. Every required virtual support has
+a retained reader and an actual birth record; induction on those
+finite records shows it is already among the supplied packages.
+Unsupported extra shadows are pruned. Hence no Point and no new
+label is created in stage 2. Replay proves physical identity with
+the target completion. 
+
+In the other general case the adjacent change witness already
+establishes permission. Stage 1 supplies the working environment;
+Section~\ref{ch:syntax}, including Lemma~\ref{lem:empty-prefix},
+supplies the candidate menu and strict-barrier hypotheses. Apply
+Theorem~\ref{thm:point} to the inside-out single open chain, carrying
+the outer old-terminal prefix constraints from the beginning.
+Each return is installed with its actual incoming restriction,
+and complete old readers are synchronized. Outer existence
+statements reselect internal witnesses jointly. Original replay
+and minimal support identify the final table, not merely its
+native projection. All new windows are below the original general
+root, and the original high terminal is removed. The maximum label
+therefore strictly decreases.
+
+For a special step, do not invoke the general stages. Compute its
+actual retained old $\Gamma$ changes. Inside the last changed old
+retained entry $t$, the unchanged parts use pure whole-entry
+downward construction; their old coverage or candidate retention
+keeps the exact incoming domains. If no retained old consumer
+changes, the whole step has no upward operation. Otherwise the
+first changed entry encountered from inside out is the last
+changed entry in physical order. Its internal candidate is now
+closed. Apply Point supply from the actual sources before $t$,
+not by beginning a fresh upward operation inside the old private
+table of $t$. Every actual upward field is strictly below the
+old label of $t$. Any deeper temporary witness is quantified anew
+in the whole existence statement. Treat the finitely repeated
+special copies in their actual order, then replay and prune.
+Deletion of the old deepest tail and the strict old bounds give
+(\ref{eq:7-1}). Section~\ref{sec:special-details} records the separate bound and
+the inside-out return.
+
+An empty-last-column successor simply deletes that last column
+and retains the earlier completed requests. It too strictly lowers
+the maximum. These are all native branches. Sections~\ref{ch:canonical} and \ref{ch:models} provide the
+model-theoretic facts used in these constructions. In particular the uniform low certificate is used
+here, not replaced by an assumption about future Point existence.
+\end{proof}
+
+\input{special-details.tex}
+
+\section{Uniform initialization below the third Silver}\label{ch:initialization}
+
+\subsection{Two fixed generated levels}
+We use the usual consequence of $0^\#$: a shift of Silver
+indiscernibles extends to an elementary $j:L\to L$. Put
+\[
+ a=\iota_0<b=\iota_1<\theta=\iota_2,
+ \quad \operatorname{crit}(j)=a,\quad j(a)=b,\quad j(b)=\theta.
+\]
+The indiscernibles are inaccessible in $L$. Form the fixed canonical
+positive hull $H=\Hull_b(a+1)$. The hereditary-size argument in
+Lemma~\ref{lem:work}, carried out in the strong $L_b$, puts it in
+$L_{(a^+)^L}$ and gives $|H|^L=a$. For each nonempty $x\in H$,
+elementarity supplies a surjection $a\twoheadrightarrow x$ in $H$;
+its values are in $H$, so $H$ is transitive. Condensation gives
+$H=L_g$ with $a<g<(a^+)^L$. Compatibility gives $\Gen(a,g)$.
+The natural positive inclusions through $L_b$ give $L_g\prec_{\Sigma_1}L$;
+in particular $L_g$ is admissible by the witness-collection argument.
+Set $g'=j(g)$. Then
+\begin{equation}\label{eq:8-1}
+ a<g<(a^+)^L<b<g'<(b^+)^L<\theta,\quad
+ L_g\prec_{\Sigma_1}L_{g'},\quad L_g,L_{g'}\models\mathrm{KP}. 
+\end{equation}
+All objects here are sets except the background shift; each restriction
+needed below is reconstructed as a canonical small hull graph.
+
+
+\subsection{Finite tower prefixes are reselected together}
+In an admissible work level, small layer structures, their satisfaction
+relations, canonical tables, finite terms and collapses can be
+constructed by $\Sigma_1$ Collection and $\Delta_1$ Separation.
+Hence a fixed finite labelling pattern with all endpoints below that
+level has a correct existential bounded certificate. This includes
+the statement that each chosen initial item layer is admissible.
+Only small structures' satisfaction is used; not the work level's
+own truth set. 
+
+\begin{lemma}\label{lem:prefix-init}
+For every finite $m\ge1$ and $r\ge0$ there is in $L_g$ a correctly
+labelled root prefix $Q_{r,m}$ consisting of $m$ bare entries followed
+by $r$ non-bare heads. Each new head's private column is a complete
+intrinsic image of the preceding root prefix. All initial item
+layers can be chosen admissible, and every initial request has its
+exact canonical domain.
+\end{lemma}
+\begin{proof}
+For one bare entry, $t=g$ is a high witness in $L_{g'}$ to
+Gen$(a,t)$ and admissibility, with $t$ beyond any specified
+$\beta<g$. Reflect the entire certified existence statement along
+the natural inclusion in (\ref{eq:8-1}). For $m$ bare entries use a previously
+existing finite prefix and the final high witness $g$, but re-quantify
+all labels and certificates of the new $m$-entry record. This proves
+the base $r=0$ by finite induction; it does not require a prescribed
+infinite auxiliary sequence.
+
+Assume a whole $Q_{r-1,m}$ exists in $L_g$. Use it as a high witness
+prefix, put a new head at label $g$, and place $j(Q_{r-1,m})$ in its
+private column at $b$. For each direct source entry $t<g$, its new
+incoming map is $j\restriction L_t$. By its source Gen and finite
+term transport,
+\[
+ j''L_t=\Hull_{j(t)}(a\cup\{b\}),
+\]
+so this is the exact canonical restriction. Internal incoming maps
+move with their own packages. The new outside head has Gen$(a,g)$;
+D4 is $L_g\prec_{\Sigma_1}L_b$. All proper comparisons are both.
+Reconstruct the canonical maps and their correct small certificates
+inside the admissible $L_{g'}$. Reflect the single assertion of the
+\emph{whole} enlarged prefix to $L_g$. The earlier labels are
+quantified again, with only the owner, pattern and finite lower
+bound fixed. This proves the induction on $r$.
+The finite tower templates are specified immediately below.
+\end{proof}
+
+\input{tower-details.tex}
+
+\begin{theorem}[Uniform initial supply]\label{thm:initial}
+The fixed $g'<\iota_2$ in (\ref{eq:8-1}) satisfies
+\begin{equation}\label{eq:8-2}
+ \forall k<\omega\ \exists C_k\,
+ [C_k\text{ legal on }C_{\rm original}(I_k)\ \wedge\
+                           \rho(C_k)<g'].                  
+\end{equation}
+\end{theorem}
+\begin{proof}
+Take a whole prefix of Lemma~\ref{lem:prefix-init} in $L_g$ and
+its outer image at column $b$. Reconstruct the new direct incoming
+edges as the restrictions just proved. The complete finite template
+has only both comparisons; the first seven conditions and D4 hold
+recursively. Its labels and all certificates lie below $g'$.
+For $k\ge2$ use the tower template $V_{k-1,1}$; $k=1$ uses
+$Q_{0,1}$ and its image, and $I_0$ only needs an empty root column.
+Thus the same bound works for every finite tower. Initial
+admissibility is a choice in this existence proof, not a new premise
+of Theorem~\ref{thm:descent}. 
+\end{proof}
+
+\section{From finite paths to the original well-order}\label{ch:rank}
+
+\subsection{A finite reachability theorem independent of well-ordering}
+Write $P\preceq_{\mathrm{pref}}V$ for a legal recursive right prefix.
+
+\begin{lemma}[Prefix deletion]\label{lem:prefix-path}
+An actual native $V$ reaches every legal recursive right prefix $P$
+by finitely many indices in $\{0,1\}$.
+\end{lemma}
+\begin{proof}
+To remove complete trailing private columns, use index zero in a
+general case; in a special case use the zero or one step which keeps
+one enclosing entry as required. Each such operation decreases the
+finite column-and-entry count and retains the desired prefix.
+To remove an entry $u$ before a retained earlier same-column
+prefix, first clear its private height by this independent column
+procedure. It becomes a bare entry with parent $p$. It is not the
+singleton owner special case, because its column has a retained
+prefix (or is top-level). A general one step, followed by deletion
+of its newly trailing columns, replaces it with a finite root
+suffix whose parents are all less than $p$. Delete those entries
+by induction on the natural number $p$. Finally follow the finite
+right spine of $P$ with these two procedures. The inductions are
+on object count and parent address, never on the native descendant
+order. 
+\end{proof}
+
+The native rightmost-copy formula has the following prefix barrier:
+if an expansion crosses below an intermediate descendant from a
+common finite source, its lower result must be a recursive prefix
+of that intermediate node. The proof compares the two finite paths
+to their first differing indices. The smaller-index result is a
+recursive prefix of the larger-index result. A subsequent jump
+below the intermediate value is governed by the same rightmost
+hole, so either the paths reduce to a common shorter pair, or that
+jump lands at a recursive prefix. Induction on the sum of the
+remaining path lengths terminates this argument. Section~\ref{sec:path-details} gives the finite comparison argument;
+no infinite descent assertion is used.
+
+\begin{lemma}[Reachability below an actual node]\label{lem:reachability}
+If $K,V\in\mathscr U$ and $K<V$, there is a nonempty finite native
+path $V\to^*K$.
+\end{lemma}
+\begin{proof}
+Let $N$ be the column-and-entry count of $K$. From the current
+source delete to its least legal recursive prefix $U>K$. Its
+first-difference description has at most $N+2$ objects: beyond
+the common part with $K$ only the distinguishing entry and, if
+needed, its containing column are necessary. Prefix deletion is
+available by Lemma~\ref{lem:prefix-path}.
+
+Test the finitely many children $U[0],\ldots,U[N+1]$. Equality
+succeeds. If a crossing below $K$ occurs without the child's being
+a prefix of $K$, it is a finite rejection witness. Otherwise a
+child above $K$ gives a new compressed prefix, strictly below the
+old compressed prefix. The finite child bound follows from the
+native adjacent-prefix identities: if all those children were
+below $K$ without such a crossing, they would give too many
+distinct prefixes of the $N$-object target. The empty-last-column
+successor is dealt with by its deletion child.
+
+Compressed states have at most $N+2$ objects and scope-bounded
+natural parent addresses. There are only finitely many such
+syntactic states. Their strictly decreasing comparison therefore
+makes this algorithm terminate, without assuming the entire
+comparison well-founded. The state bound depends on the fixed target alone, as shown in
+Section~\ref{sec:path-details}.
+
+A rejection cannot occur for actual $K,V$. Their finite initial
+towers are recursive-prefix comparable; prefix deletion puts their
+two given histories under one finite common source. The finite
+path prefix barrier then excludes exactly the purported rejecting
+crossing. Thus the algorithm succeeds, producing the required
+finite path. It is nonempty because $K<V$.
+\end{proof}
+
+\input{path-details.tex}
+
+\subsection{Least maximum labels}
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+Fix $g'$ from Theorem~\ref{thm:initial}. Every actual $M$ has a
+finite history from some $I_k$. Ordinary induction on that finite
+history, using Theorem~\ref{thm:descent}, supplies at least one legal
+labelling of $M$ with maximum below $g'$. Define externally in ZFC
+\begin{equation}\label{eq:9-1}
+ r(M)=\min\{\alpha<g':\exists C\,[C\text{ legal on }
+ C_{\rm original}(M)\ \wedge\ \rho(C)=\alpha]\}.            
+\end{equation}
+The set exists by Separation on the ordinal $g'$ and is nonempty,
+so its least member exists. This is not minimization inside a
+weak endpoint. All the graph and small-structure clauses have
+their actual external set-theoretic meanings.
+
+Choose a legal $C$ attaining $r(M)$. The arbitrary-source quantifier
+in Theorem~\ref{thm:descent} makes it applicable to this $C$, and gives
+\begin{equation}\label{eq:9-2}
+                       r(M[n])\le\rho(C')<r(M).              
+\end{equation}
+Each node's rank is defined independently by (\ref{eq:9-1}). A previous
+step's specially chosen output is not an extra eligibility
+condition on a later source. The physical-source identity required
+by the construction was established by replay, not by naming an
+output as a new input.
+
+For actual $K<M$, Lemma~\ref{lem:reachability} supplies a nonempty
+finite path from $M$ to $K$. Apply (\ref{eq:9-2}) along it to obtain
+$r(K)<r(M)$. Thus $r$ strictly embeds the original comparison into
+$g'$. More directly, a nonempty subset of $\mathscr U$ has a least
+rank in its rank image; a node attaining it has no smaller member
+of that subset. Hence the original linear comparison is a
+well-order, not merely a relation with terminating selected
+fundamental sequences. Finally put $r(\mathrm{Limit})=\iota_2$.
+By (\ref{eq:8-2}), $r(I_n)<g'<\iota_2$ for every $n$, and all subsequent
+edges decrease by (\ref{eq:9-2}). This proves every assertion.
+\end{proof}
+

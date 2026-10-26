@@ -1,0 +1,31 @@
+{
+  "kind": "document-and-layout-checks-not-formal-mathematics",
+  "page_count": 38,
+  "main_font_points": 11,
+  "paper": "A4",
+  "margin_mm": 24,
+  "missing_references": [],
+  "duplicate_labels": [],
+  "latex_warnings": [],
+  "out_of_page_blocks": [],
+  "bad_internal_links": [],
+  "blank_pages": [],
+  "unresolved_notebook_reference_macros": 0,
+  "replacement_characters": 0,
+  "pdf_sha256": "778aec1d9af3345fa51af9ec7bd1866175890bc4ee220605a0f1970023ae5bf4",
+  "visual_review": {
+    "status": "passed",
+    "pages_rendered": 38,
+    "pages_inspected": 38,
+    "method": "Poppler page renders; all-page contact-sheet inspection; changed pages rechecked after final pagination fixes.",
+    "font_embedding": "All PDF fonts embedded; no Type 3 fonts.",
+    "scope": "Layout, legibility, cross-references and artifact integrity; not formal mathematical verification."
+  },
+  "isolated_source_rebuild": {
+    "status": "passed",
+    "page_count": 38,
+    "pdf_extracted_text_identical": true,
+    "latex_warnings": 0,
+    "notebook_dependencies_used": false
+  }
+}

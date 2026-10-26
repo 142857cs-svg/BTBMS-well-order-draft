@@ -1,0 +1,215 @@
+\subsection{Synchronizing a complete source prefix}
+\label{sec:prefix-installation}
+Fix an actual old map $J:L_g\to L_t$, or an actual connection map
+already present in a low record. In addition to the two terminal
+positions, retain the full closed proper prefixes, their actual
+consumers, and the restriction identities of their graphs. The new
+private height at the terminal may still be open. No clause here
+asserts that this new terminal is already a legal completed entry.
+
+\begin{lemma}[First-gap synchronization]\label{lem:first-gap}
+Given a correctly installed left Point and the finite closed source
+prefix that must precede it, one can synchronize that prefix along all
+its actual old readers and return the Point as one whole package. The
+construction preserves their old complete-prefix conditions. Source
+roots are paired through actual both chains; old target coverage blocks
+may remain between the paired targets.
+\end{lemma}
+\begin{proof}
+Find the first source root in the required prefix not yet paired. If it
+was removed by rootOnly in the next request, follow that request's
+actual consumer chain to the source that supplies its whole closed
+package. Along an ancestor route, G places the consumer before the
+containing head, so the package is closed. Along a connection route,
+use that connection's recorded map and continue back to its Init record.
+Transport the whole source package forward along these same maps, and
+insert each image before its actual right carrier. The new external
+incoming edge at a label $J(\sigma)$ is $J\restriction L_\sigma$;
+its domain is exactly $L_\sigma$ by Lemma~\ref{lem:transport}. An image
+of a source head's old incoming edge is an internal record with a
+different role, and is not used as this new edge.
+
+For an old proper reader, finite-term identity on its actual source
+identifies the restriction used in the transport with the reader's
+restriction. Thus an old both event remains a full package equality.
+An added rootOnly package lies below its unchanged right carrier and
+inherits that carrier's whole-image bound. An added targetOnly package
+lies below its actual closed target carrier and uses the strict or
+whole-domain bound of that old coverage block. At a terminal root,
+domain membership and the codomain bound replace the nonexistent value
+$J(g)$. The persistence condition uses the old opening target and
+ignores only a final terminating both reset. These are precisely the
+three scan events, with their domain obligations.
+
+For several readers of one source, choose the same package once and
+combine their finite lower bounds and the common stopping bound (\ref{eq:6-1}).
+Use its corresponding image along each real route. Source-prefix
+synchronization may transport several intermediate packages, but each
+transport fills the first missing proper pair in a finite fixed source
+prefix. Backward travel goes to an earlier actual column or an earlier
+connection. Thus it terminates.
+
+After synchronization, let $G$ be the next source root and let $s$ be
+its first target consumer. Every earlier required source root has
+already been consumed by its paired target before $s$. If the new
+height $P$ is legal at the source and $P<\operatorname{ht}(G)$, then
+$P<\operatorname{ht}(s)$: otherwise candidate minimality at the first
+consumer would put $C(\operatorname{ht}(s))\le P$ below $G$, so $G$
+could not begin that block. Hence a Point before $G$, above the entire
+required preceding prefix, returns to a package before $s$. Repeat at
+the first actual consumer of $G$ in every intermediate column. This
+locates the insertion; the final equal-height target of $G$ need not
+be its first consumer.
+
+The prefix premise is essential. Without it an earlier unpaired source
+root could consume the new target before $G$ was reached. The preceding
+first-gap procedure supplies exactly that premise. Replaying and
+pruning the closed packages preserves physical identity by
+Lemma~\ref{lem:replay}.
+\end{proof}
+
+\begin{lemma}[Necessary support is smaller]\label{lem:small-support}
+Let $P$ be an actual standard target at owner $q$ and suppose $C_r(P)=P$.
+Every support head $B$ actually consumed by an internal reader of $P$,
+at an external visible column $b\ge r$, satisfies
+\begin{equation}\label{eq:6-2}
+          C_r(B)=B,\qquad d(B)<d(P),\qquad\nu(B)<\nu(P).       
+\end{equation}
+The assertion includes old support that remains necessary, but not an
+unpruned larger seed merely transported temporarily into the framework.
+\end{lemma}
+\begin{proof}
+Because $P$ is exactly legal at $r$, its true external parents are all
+below $r$. The first exit from its private region to a visible column
+$b\ge r$ must therefore be through its owner $q$. Follow a particular
+consumed root back to the first target $Y$ it consumes. Either the
+first event is both, so $B=Y$, or it opens coverage, so $B=C_q(Y)$.
+If the same root continues to cover later targets, retain this original
+opening $Y$ as its source.
+
+The standard template of $Y$ is a proper private subheight of $P$ or
+an internal candidate descended from one. G bounds its depth strictly
+below $d(P)$, and proper containment bounds its size below $\nu(P)$.
+Cut does not increase size and preserves a retained nonempty first
+branch. Fields outside $Y$ but still inside $P$ are cut at the fixed
+external owner; any true external field left in $B$ comes from $P$
+itself and is below $r$. Hence $C_r(B)=B$. The same proof applies to
+the internal requests of this support package, with strictly smaller
+size at each exit. Birth-record induction proves (\ref{eq:6-2}).
+
+If a larger old package has been transported, first prune it to the
+support actually used by the retained readers. A retained head is
+analyzed through its first actual consumption as above. Its old entire
+source prefix is an installation obligation, not a new internal target
+of size $\nu(B)$; Lemma~\ref{lem:first-gap} handles that prefix.
+\end{proof}
+
+\begin{lemma}[The next exact support cannot be skipped]
+\label{lem:exact-support}
+Let $D_1,\ldots,D_k$ be the union, in actual position order, of the
+necessary roots used by finitely many internal readers of an exactly
+legal $P$. Deduplicate actual occurrences, not equal heights. After
+$D_1,\ldots,D_{i-1}$ have been paired through the outer comparison,
+the request at $D_i$ either uses its equal actual root or requires the
+exact insertion $D_i$. It cannot persist under a larger root.
+\end{lemma}
+\begin{proof}
+Every intervening target $E$ between the last paired root and $D_i$
+has $E<D_i$. By (\ref{eq:6-2}), $D_i$ is legal in the outer root class, so
+$C_r(E)\le D_i$. Any coverage opened in this interval therefore has a
+root at most $D_i$. On arriving at $D_i$, a smaller current root is
+removed by rootOnly and its tag is reset; an equal root gives both.
+A strictly larger first root has no persistent tag, so the minimum
+candidate rule requests $D_i$ itself. Root exhaustion gives the same
+exact request. This proves the assertion by induction on $i$.
+
+Composition of qualified scans shows that each resulting proper pair
+has an actual both chain through all intermediate columns. Merging the
+necessary roots of several readers changes neither this chain nor their
+inner consumers: omitted roots were unused, and retained required roots
+stay in their actual order. Larger temporary shadows are not added to
+the necessary word merely because they appeared during preparation.
+\end{proof}
+
+To apply these lemmas during an open outer call, carry all its actual
+old terminal-prefix constraints from the beginning, including every
+old graph along a possible backward route and the connection route to
+Init. A local insertion before the open terminal has a closed proper
+right carrier. A root-side insertion uses that carrier's whole-image
+bound. A target-side insertion with proper source uses its actual
+restriction and the coverage bound; one with terminal source uses the
+whole-domain version. Several readers use one shared source. These
+checks do not read the new open private height. A constraint on that
+entire future height is left to its outer return and is not prematurely
+declared satisfied. External old graphs need not themselves be low
+parameters of the local existence formula: their restrictions are
+checked on installation, and their local numerical demands enter only
+as the proved common finite lower bound.
+
+\subsection{Reflecting a jointly chosen source}\label{sec:common-source}
+The outside support of a Point has two kinds of data. A package in a
+strictly earlier external column has its closed fields and correct
+certificate below that receiving column. A package on the current
+owner before the terminal has its fields and certificate below that
+terminal. The latter may be above the critical point. It need not be
+fixed by the current map; it must have an actual source correspondence.
+
+\begin{proposition}[Common-source reflection]\label{prop:common-source}
+Let $J:L_g\to_{\mathcal E}L_t$ be an actual recorded map, with critical
+point $a$ and $J(a)=b$. Suppose $C_a(P)=P$. Assume:
+\begin{enumerate}
+\item the necessary finite source support $\Sigma$ is already correctly
+installed before $g$, using smaller calls and the old prefix constraints;
+\item synchronization gives the target intrinsic support
+$\Sigma'=J(\Sigma)$ along actual both chains; each side's external
+incoming edges and installation certificates are checked separately;
+\item the closed internal construction of $P$, together with this
+support, gives a true intrinsic high Point and hence Points cofinally
+below $t$ by the old natural work-level inclusion.
+\end{enumerate}
+Then for every $\beta<g$, above the required source-prefix bound, there
+is an intrinsic $P$ Point with label $\rho$ satisfying
+$\beta<\rho<g$. Its installation and return use the same chosen support.
+\end{proposition}
+\begin{proof}
+Use $J(\beta)<t$ as the target lower bound in the third premise.
+The existential formula describing the entire intrinsic Point has
+parameters $J(\Sigma)$ and the images of the genuine fixed external
+ports. Its internal fields, graphs and certificates are all quantified.
+The correct low check belongs to the actual $L_t$ by the certificate
+corollary. Positive elementarity of $J$ reflects this very formula
+to $L_g$, with parameters $\Sigma$ and bound $\beta$. It produces a
+source witness, not an inverse image of an arbitrarily selected target
+table. Lemma~\ref{lem:first-gap} installs and returns it with external
+edge $J\restriction L_\rho$.
+
+The source support may lie above $a$: only its actual image equation
+is used. Nor must an old target covered by a proper root equal the
+image of that root's endpoint. Its actual incoming map agrees with
+the restriction below that endpoint, which is all that transporting
+the newly chosen $\rho$ requires. On entering a more external existence
+statement, $\Sigma$, both internal tables, all graphs and their
+certificates are quantified together again. No arbitrary earlier
+choice becomes an extra eligibility condition on the outer call.
+\end{proof}
+
+The third premise is obtained as follows. Let the actual old outside
+item have label $t$ and retained relation $L_t\prec_{\mathcal E}L_W$.
+After all smaller calls have returned, its internal target is closed,
+with actual last direct column $q$ satisfying $t<q<W$ when nonempty.
+Use the old label $t$ as a logical high witness. Its Gen is unchanged;
+D4 restricts to the actual $q$; all private graphs and correct
+certificates are present. Reflect the existence of this whole finite
+configuration, with all its variable fields, along the natural
+inclusion to $L_t$. For any $\eta<t$ it gives a Point with outside
+label between $\eta$ and $t$. For an empty height omit D4. There is
+no premise that $P$ is a prefix of the old height.
+
+The first two premises are supplied by the smaller calls themselves.
+Equation (\ref{eq:6-2}) makes every necessary support a strictly smaller target.
+The old terminal-prefix constraints accompany those calls. On return,
+Lemma~\ref{lem:exact-support} gives actual proper both sources before
+$g$; their intrinsic records and source certificates lie in $L_g$, and
+their target records are the actual $J$-images. Thus no second task is
+created to find an inverse image of an already chosen support. This
+is the closure needed for the simultaneous induction below.

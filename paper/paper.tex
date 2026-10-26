@@ -1,0 +1,90 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=24mm,headheight=14pt,footskip=12mm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\usepackage{amsmath,amsthm,amssymb,mathtools,mathrsfs}
+\usepackage{booktabs,longtable,array,enumitem,fancyhdr,listings,xurl,xcolor,needspace}
+\usepackage[colorlinks=true,linkcolor=blue!40!black,urlcolor=blue!50!black,
+ citecolor=blue!40!black,bookmarksnumbered=true,
+ pdftitle={A well-ordering proof for BTBMS: concise edition},
+ pdfauthor={The G research programme; prepared with ChatGPT},
+ pdfsubject={Condensed revision of the v139 proof manuscript}]{hyperref}
+\usepackage{bookmark}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\numberwithin{equation}{section}
+\DeclareMathOperator{\Hull}{Hull_{fin}}
+\DeclareMathOperator{\Gen}{Gen_{fin}}
+\DeclareMathOperator{\Cut}{Cut_{fin}}
+\DeclareMathOperator{\res}{res}
+\DeclareMathOperator{\nf}{nf}
+\newcommand{\pref}{\preceq_{\mathrm{pref}}}
+\newcommand{\spref}{\prec_{\mathrm{pref}}}
+\newcommand{\Ord}{\operatorname{Ord}}
+\newcommand{\dom}{\operatorname{dom}}
+\newcommand{\crit}{\operatorname{crit}}
+\setlength{\emergencystretch}{2em}
+\setlength{\parskip}{3pt plus 1pt}
+\setlength{\parindent}{1.1em}
+\setlist{itemsep=2pt,topsep=4pt,parsep=1pt}
+\setcounter{tocdepth}{1}
+\setcounter{secnumdepth}{2}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small BTBMS: a well-ordering proof}
+\fancyhead[R]{\small Concise edition}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\raggedbottom
+\lstset{basicstyle=\ttfamily\footnotesize,breaklines=true,
+ breakatwhitespace=false,columns=fullflexible,keepspaces=true,
+ showstringspaces=false,numbers=left,numberstyle=\tiny\color{gray},
+ numbersep=8pt,xleftmargin=5mm,aboveskip=5pt,belowskip=5pt}
+\title{\textbf{A well-ordering proof for BTBMS}\\
+ \large Under the existence of $0^\#$}
+\author{The G research programme}
+\date{Concise edition, 26 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+Let $\mathscr U$ be the finite expressions reached from the finite
+branches of BTBMS Limit by its original fundamental sequences. Working
+in $\mathsf{ZFC}+\text{``}0^\#\text{ exists''}$, we give a well-ordering
+argument for the original recursive comparison on $\mathscr U$.
+Finite completion, graded ancestor control, complete-window comparisons
+and simultaneous Point construction yield a strict decrease from every
+current legal labelling. A fixed finite-constructor-first order on $L$
+provides canonical maps and certificates at the actual reflection levels,
+including weak bare endpoints. Silver indiscernibles supply all finite
+initial towers below one fixed bound. Least maximum labels, together
+with a separate finite reachability argument, give an order-preserving
+ordinal rank. The additional Limit vertex may be ranked by the third
+Silver indiscernible.
+\end{abstract}
+\noindent\textit{Editorial note.}
+This revision replaces the accumulated research appendices with the
+general arguments used by the proof. It incorporates the three amendments
+on work models, empty tail prefixes and generated restrictions. The
+initial G approach and research constraints were supplied by the user;
+the subsequent arguments and this edition involved substantive ChatGPT
+assistance. This remains a research manuscript, not a proof-kernel
+verification or independent peer review.
+\begingroup\setlength{\parskip}{0pt}\tableofcontents\endgroup
+\input{main-text.tex}
+\input{source-notes.tex}
+\clearpage
+\appendix
+\section{The pinned native operation}\label{app:code}
+The following excerpt fixes the finite data, relative-height comparison,
+root window and both expansion branches. Addresses in the code are
+zero-based; displayed addresses in the mathematical text are one-based.
+The comparator helpers implement the recursive lexicographic order of
+Section~\ref{ch:native}; the full pinned file is included in the source
+package. This is a definition, not a finite test offered as a proof.
+\lstinputlisting{native-definition.ts}
+\end{document}

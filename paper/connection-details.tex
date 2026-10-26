@@ -1,0 +1,96 @@
+\subsection{The finite connection formulas}\label{sec:connections}
+Here $P$ and $Q$ name only the finite paired boundary fields, all source
+fields being in $\dom(J_*)$, so $J_*(P)=Q$. The source endpoint $h$
+is not one of those fields. The side record $S(P)$ may extend beyond
+$L_h$; no assertion $J_*(S(P))=S(Q)$ is needed. Its closed fields and
+certificates are in $L_c$. A side field can lie between two boundary
+item fields; the required inequalities are
+\begin{equation}\label{eq:7-2}
+ c(X)<\text{variable side field}<c(Y)\quad\text{in }R(X,Y),
+\end{equation}
+together with the actual complete field order. Fixed earlier ports
+are not variable side fields. Open old items retain their old labels,
+Gen, actual graphs, exact domains and work-level relations; their new
+private heights are not yet asserted to be complete.
+
+\begin{lemma}[One-supplier finite connection]\label{lem:connection}
+Suppose the prepared source supplies true $R(P,Q)$ and
+$\operatorname{Init}(P)$, correct low-side certificates in $L_c$, and
+no omitted external requests. For any finite number of copies and any
+$\beta<a$, the original $J_*$ alone supplies an ordered chain of low
+boundaries, all its required side records and incoming edges, and the
+final low certificates. All new fields are below $a$; the final closed
+certificates belong to $L_a$.
+\end{lemma}
+\begin{proof}
+The high witness $X=P$ gives in $L_v$
+\begin{equation}\label{eq:7-3}
+ \exists X\,[\beta<c(X)<c\ \wedge\operatorname{Init}(X)
+                                      \wedge R(X,Q)].           
+\end{equation}
+Reflect through $J_*$, whose fixed external parameters lie below $a$.
+It gives $A_0$ below $a$, with Init$(A_0)$ and $R(A_0,P)$. Equation
+(\ref{eq:7-2}) puts all its side fields below $a$, even if they interleave
+the item fields of $A_0$.
+
+Suppose the last low boundary is $A$ and $R(A,P)$ has already been
+supplied. Its source certificate lies in $L_h$, hence also in $L_v$,
+where its bounded check remains correct. Use $Y=P$ as the high witness
+for
+\begin{equation}\label{eq:7-4}
+ \exists Y\,[c(A)<c(Y)<c\ \wedge R(A,Y)\wedge R(Y,Q)].       
+\end{equation}
+Keep the previously required low fields and earlier connections in
+the formula. They lie below $a$ and are fixed by $J_*$. Certificates
+not yet below $a$ remain existential fields; they are not falsely
+treated as fixed parameters. Reflection gives $A<B<a$ with $R(A,B)$
+and $R(B,P)$. Retain all needed relations $R(A_i,P)$, as well as the
+consecutive connections. Their real records preserve each open item's
+stability to $L_a$. Repeat this finite step as many times as the
+specified native expansion requires.
+
+Finally use $Z=P$ and the actual $S(P)$ to cap the entire low chain.
+In the high existence statement require every final closed certificate
+separately to belong to $L_c$. This statement has a true witness:
+the earlier connection certificates are in $L_h\subset L_c$, and the
+original closed side certificates are in $L_c$ by hypothesis.
+Since $J_*(L_a)=L_c$, reflection gives the final cap below $a$ and
+all the required certificates in $L_a$. Retained incoming graphs are
+part of the resulting data; none has been used as an additional
+stage-1 supplier.
+
+Choose the common work model with the same $J_*$, by reflecting the
+joint statement (\ref{eq:5-2}), which includes both its strength and the actual
+open-item elementary relations. Then discard $P,Q,h,v,J_*$ and the
+high records. Future backward travel uses only the actual low
+connections and their Init source. The induction has taken finitely
+many downward uses of one original map and has not used the output
+of a previous native step as an extra assumption.
+\end{proof}
+
+The preparation supplies the hypotheses of this lemma, not merely an
+isomorphism of displayed heights. Proper rootOnly gaps are filled by
+whole images along actual old routes, and complete both packages are
+kept. Old coverage blocks remain as side records. Every direct incoming
+edge at a right boundary belongs to $R$, including targetOnly terminal
+edges with their exact domains. Lower-side closed graphs have targets
+below $c$, so the tight certificate theorem places their data in $L_c$.
+Right-side graphs have targets below $v$, so their data are in the
+actual $L_v$. A certificate for a relation to the high boundary $P$
+may remain in $L_h$ until the cap. These are different layer bounds;
+placing every intermediate certificate in $L_c$ without this argument
+would lose the tight bare-endpoint case.
+
+Stage 0, when permitted, is a finite source-prefix synchronization of
+the original last request. Freeze that request before adding anything.
+At its first missing proper pair, the actual consumer route reaches
+a complete package strictly before the original last column. If the
+root is an ancestor, the strict-before-containing-head conclusion of
+Theorem~\ref{thm:invariants} supplies this bound. Transport that entire
+old package; subsequent transports use its continuous whole images,
+each still before the same original last column. The next unpaid
+original proper-root gap moves forward. No internal modification is
+performed before transporting its already changed enclosing package.
+When the frozen request has no rootOnly, none of these stage-0
+operations is used; its existing qualified coverage and both skeleton
+provide the appropriate records directly.

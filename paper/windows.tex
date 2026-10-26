@@ -1,0 +1,244 @@
+\subsection{Complete windows along finite histories}\label{sec:complete-windows}
+Fix an actual nonempty column prefix $U$ in a column $q$, let $p$ be
+its last parent, and let $s$ be the next parent, or the parentless
+sentinel if there is no next entry. A \emph{qualified cut} consists of
+a root $r>s$ on the single residual-parent chain of $p$ for the entire
+word $\mathcal H(U)$. Let $X$ be the complete same-level suffix beginning
+at this cut. It includes all later columns and their private heights.
+
+Temporarily truncate to $U$ and append a formal bare entry with parent
+$r$. Apply one native copy window while leaving its rightmost recursive
+hole unfilled. This defines a one-hole context $\Psi$. It retains $U$,
+appends the complete root residue, shifts addresses by the native
+threshold, and fills the hole by its argument. If $r$ contains $q$,
+property G makes the whole threshold word strictly lower than the
+containing head. Hence the scan stops before that head is consumed,
+and the ancestor branch of the native formula still defines the same
+one-hole context. The formal context is only used for comparison; it
+is not asserted to be an actual node.
+
+The hole follows a nonempty finite constructor. Both ordinary and
+ancestor contexts strictly preserve order and recursive prefixes.
+Define $T_0=\varnothing$ and $T_{j+1}=\Psi(T_j)$.
+
+\begin{lemma}[Finite context criterion]\label{lem:context}
+The $T_j$ form an increasing chain of recursive prefixes, and for each
+finite complete suffix $X$,
+\begin{equation}\label{eq:3-3}
+       X<\Psi(X)\quad\Longleftrightarrow\quad
+       (\exists j\ge1)\ X\le T_j.                    
+\end{equation}
+\end{lemma}
+\begin{proof}
+The empty suffix is a prefix of $\Psi(\varnothing)$; prefix preservation
+proves the first assertion. If $X\le T_j$, compare $X$ with $\Psi(X)$
+at the first place where $X$ leaves the common iterated framework.
+Leaving earlier gives $X<\Psi(X)$, while staying in the framework
+reduces the comparison through the hole. After at most $j$ reductions
+one reaches the empty suffix, where strictness holds. Conversely,
+suppose all $T_j<X$. The first difference between $X$ and each $T_j$
+must lie after the framework shared with the preceding iterate; otherwise
+strict order preservation would contradict $X<\Psi(X)$ at that same
+difference. Each reduction passes a nonempty constructor. Eventually
+the common framework would pass the last field of finite $X$, which
+is impossible. This is induction on the finite first-difference path,
+not on BTBMS descent.
+\end{proof}
+
+\begin{lemma}[Native window transfer]\label{lem:window-transfer}
+For corresponding cuts in copies of the same mother step, let $\sigma$
+be their actual address transport and suppose its threshold $a$ satisfies
+$r\le a$ for the fixed root $r$. With the native remaining-copy indices,
+\begin{equation}\label{eq:3-4}
+ \sigma\Psi_i(X_i)\pref\Psi_j(X_j),\qquad
+ X_j\le\sigma X_i.                                   
+\end{equation}
+\end{lemma}
+\begin{proof}
+Pull the finite comparison word back separately in each copy. Before an
+ancestor is met, closed heads are compared by the same order-preserving
+map. At the ancestor, G stops the scan before its changing tail. After
+the first transport, the root's private addresses are internal, and
+the second shift adds to the first. True external parents and the top
+parents of the root residue remain fixed. Thus field-by-field transport
+commutes with filling the complete hole; the possible loss is only a
+right truncation. This proves (\ref{eq:3-4}).
+
+If the source mother root itself is open, copy $j$ has only $n-j$
+mother iterations left. Using $n$ would fill the wrong hole. There is
+also a separate owner case: if the mother tail is $t$, the root is $b$
+and $d=t-b$, then the $j$th transported tail-prefix package has owner
+$b+(j+1)d$, not $b+jd$. A query to its own containing owner uses the
+closed containing package and commutes with transport. A query to an
+earlier boundary either leaves a head in the installed prefix, in which
+case its first residual parent is already strictly above the next parent
+$s$, or exhausts that prefix and returns to the mother's residue.
+In the latter case apply the residual identity of Lemma~\ref{lem:word}
+and the earlier-boundary instance of (\ref{eq:3-4}). The boundary index decreases.
+This treats owner queries without applying (\ref{eq:3-4}) at an ineligible
+threshold below its fixed root.
+\end{proof}
+
+\begin{proposition}[Actual complete-window bound]\label{prop:sce}
+Every qualified cut of every $M\in\mathscr U$ satisfies $X<\Psi(X)$.
+Every standard completed candidate satisfies the corresponding statement
+for roots internal to that candidate.
+\end{proposition}
+\begin{proof}
+Induct on the length of the given finite native history. In an initial
+tower, a cut lies at the end of a singleton column. Its suffix is
+already a prefix of the first nonempty window, so
+Lemma~\ref{lem:context} applies. For the induction step classify the
+position of the cut in the explicit native construction.
+\begin{enumerate}
+\item At a retained prefix $U$, closed earlier roots and the formal
+window are unchanged. An open containing root is protected by G. The
+suffix only decreases, so its old finite-iterate bound remains. If the
+last entry of $U$ changes internally, the relevant level has the single
+retained column $U$, which is a prefix of $\Psi(\varnothing)$.
+\item At the first new boundary, EA puts the old next parent and the
+new residual parent consecutively on the same chain. The only new
+qualified root between them is the mother root. Its new suffix is the
+actual $T_n$, giving the required finite bound directly.
+\item A cut in the root residue uses the same normal form of the
+complete scanned prefix. Exhausting an installed prefix composes the
+same one-hole context. If its final retained entry changes, use the
+single-column case of the first item.
+\item A cut in the bad part, a root-private package or a later boundary
+is governed by Lemma~\ref{lem:window-transfer}. A query leaving a head
+in the installed prefix is decided by the strict first-parent comparison.
+An exhausting query uses the old residual window and the correct
+remaining-copy index. Moving to an earlier boundary decreases that
+finite index.
+\item At the final zero hole, the entire deepest last column disappears.
+A removed private cut has no surviving obligation. A retained cut
+whose $U$ changes is the single-column case; otherwise its containing
+head is protected. Special repetitions preserve same-parent adjacency;
+later copies use the preceding complete copy and the same window fill.
+A new same-parent seam has no new root satisfying $r>s$.
+\end{enumerate}
+These cases cover the retained prefix, new seam, residue, bad part,
+private copies and deleted tail. They use the induction hypothesis only
+on the actual mother node, not on an arbitrary formal substitution.
+
+For Cut, restrict attention first to an internal root. If Cut changes
+the last retained entry of $U$, the output has the single-column form
+already considered. Otherwise all earlier closed fields are unchanged,
+and G protects every containing head before the cut. The same formal
+context has legal finite iterates at the destination owner: its retained
+framework is legal, and copying only moves internal fields. Choose a
+strict old finite-iterate upper bound. Minimality of Cut bounds the new
+suffix by that legal iterate, and Lemma~\ref{lem:context} applies again.
+Recursive prefixes, true subheights and whole address transport preserve
+this argument. Birth-record induction therefore gives the assertion for
+all standard completed candidates. No arbitrary external port is added
+by this internal version.
+\end{proof}
+
+\subsection{Source ports and strict carriers}\label{sec:strict-proof}
+There are two transport issues in applying Proposition~\ref{prop:sce}.
+First, equal numerical addresses in unrelated private environments are
+not common ports. Second, a Cut-created bare edge has to be pulled back
+to an old chain; it cannot be declared an old edge.
+
+Suppose a whole package at owner $q$ is moved to a compatible port $a$.
+For a retained non-bare internal entry, transport an arbitrary finite
+threshold word of smaller depth by its finite comparison pattern.
+Closed fields before Cut are either true external parents below $a$ or
+internal fields at least $q$; transport is strictly increasing on this
+allowed set. The standard heights in a common external column are
+fixed by the same comparison map. At a containing ancestor G again
+prevents the scan from reading the changed tail. If the new chain goes
+through the new owner, the old chain goes through $q$, and the common-port
+condition supplies the rest of that very same word's chain to $a$.
+If it uses the new final bare edge, (\ref{eq:2-1}) identifies its word with the
+normal form of the cut prefix. Old EA then supplies the missing old
+segment. If the bare entry is consumed, there is no new residual edge
+to justify. This proves that every compatible common external port of
+the moved entry was already a compatible port of its actual source.
+
+Tracing a non-bare head $B$ in an original completed column $r$ through
+its actual birth record now gives a source occurrence $x$, of height
+$X$, such that
+\begin{equation}\label{eq:3-5}
+ B=C_r(X),\quad d(B)=d(X)=g,\quad
+ r\in\{\operatorname{owner}(x)\}\cup
+       \Pi_g(\operatorname{owner}(x)).                 
+\end{equation}
+This traces one actual column, including through private copies; it
+does not infer provenance from a printed parent number.
+
+New support in the original gap immediately before an active height
+$H$ has depth below $d(H)$. Indeed a request from within $H$ has that
+depth bound by G; a request from an earlier closed package terminates
+before its own containing head and never enters this gap; a request
+from a package newly inserted in the gap has still lower depth. Induct
+on creation order. Therefore such support lies below every positive
+result $P$ with $d(P)=d(H)$ and cannot be a strict barrier.
+
+\begin{proposition}[Strict-barrier theorem]\label{prop:strict-barrier}
+In an actual corresponding backward query for $H\to P$, every original
+strict carrier $P<B<H$ contains $P$ as a recursive prefix. The same
+conclusion holds after the permitted preparation, with the four carrier
+origins specified below.
+\end{proposition}
+\begin{proof}
+Consider first a positive general change with nonempty deepest tail
+prefix $U$. If the mother root $b$ is internal to $H$, the interval
+$P<B<H$ forces $B$ to retain the entire framework through $U$, with
+next parent below $b$. EA therefore leads to the same corresponding
+internal root: a chain cannot leave the package and later return to
+an internal column, and G protects any containing head on the route.
+The two complete contexts agree. The suffix of $P$ is $T_n$; the suffix
+$Y$ of $B$ has a finite bound $Y\le T_k$ by Proposition~\ref{prop:sce}.
+Thus $T_n\le Y\le T_k$. Since the iterates are recursive prefixes,
+prefix interval convexity gives $T_n\pref Y$, hence $P\spref B$.
+
+If $b$ is external, let $r<q$ be the compatible actual query column.
+Candidate dichotomy and minimality give $C_r(P)=P$. The owner-boundary
+cases in that dichotomy exclude $b=q$ and $r<b<q$, so $b\le r<q$.
+Equation (\ref{eq:3-5}), followed back to the first strict source, gives
+\[
+                    P<X\le B=C_r(X)<H.
+\]
+This $x$ is not the active entry or an entry inside $H$. The common
+framework up to the deleted last bare entry identifies a cut in $X$
+with the same complete $U$ and next parent below $b$. For internal
+pieces, comparison is transported by the same order map. All true
+external fields of that framework are below $r$ and hence name common
+actual columns. If the chain leaves the source owner, (\ref{eq:3-5}) puts both
+threshold chains through that same $r$; their tails then agree down to
+$b$. Proposition~\ref{prop:sce} gives $Y<\Psi_x(Y)$ for the complete
+source suffix $Y$.
+
+Perform only the actual zero deletion at this source cut, and call its
+remaining complete suffix $J$. The common framework survives: otherwise
+it would contain the global deepest bare entry and have fewer entries
+than $H$, contrary to $P<X<H$ at this cut. Put $m=\nu([U])$.
+Then $J\pref Y$, and the removed suffix has size either zero or $m+1$.
+The fixed part of $\Psi_x$ contains all of $U$ and one additional entry
+leading to the hole, hence has size at least $m+1$. For an ancestor
+root that extra entry survives by G. Filling the full window therefore
+gives, under the actual source-target field correspondence,
+\begin{equation}\label{eq:3-6}
+               Y\le\widehat{\Psi_x(J)}\pref T_1\pref T_n.
+\end{equation}
+Here both internal shifts add and true external parents remain fixed;
+one must retain all same-level columns when making this comparison.
+But $P<X$ gives $T_n\le Y$. All comparisons in (\ref{eq:3-6}) must be equalities.
+If $J=Y$, the source strict window bound contradicts equality. If
+$J\ne Y$, equality leaves no unaccounted field outside the rightmost
+containing chain and gives $X=P$, also a contradiction. Thus an external
+root has no strict carrier in this interval.
+
+If $U$ is empty, use the complete-column window: the root is an earlier
+nonempty direct private column, its entire residue survives the empty
+scan, and the preceding internal-root argument uses that full column
+as the nonempty context. Zero changes are recursive truncations, and
+special changes have repeated identical same-parent constructors; in
+both cases the first-difference prefix comparison gives the assertion
+directly. Later strict carriers inherit the first one's prefix by
+recursive-prefix interval convexity. The four permitted preparation
+origins are checked in the following paragraphs and
+Lemma~\ref{lem:empty-prefix}.
+\end{proof}

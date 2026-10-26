@@ -1,0 +1,164 @@
+\subsection{Layer identification and partial truth}\label{sec:truth-coding}
+Here and below, a certificate means a tuple of specified objects with
+a stated check, not an object whose correctness is merely asserted.
+When a boundary lacks pairing closure, the objects are quantified
+separately. Codes for finitely many coordinates are flat finite sequences
+over a limit base; they are not the ordinary high sets whose canonical
+order will later be compared.
+
+\begin{lemma}[Correct small layers]\label{lem:layers}
+There is a bounded check for a proposed constructible layer $L_\alpha$
+using its proper hierarchy diagram, finite assignment domain and proper
+layer truth. It is sound in every transitive environment containing the
+data and the true $\omega$. Each required diagram has a fixed finite
+coding overhead. At a limit, this overhead is absorbed below that limit
+for each proper layer.
+\end{lemma}
+\begin{proof}
+Supply a function $H$ with domain $\alpha$, whose value at $\beta$ is
+claimed to be $L_\beta$; do not include the endpoint as a self-referential
+pair. Require the zero clause, union at limits, and at successors the
+two directions of the Def clause. The latter say that every displayed
+new set is defined by a formula with finite parameters over the previous
+layer, and that every such definition is represented.
+
+Supply also a domain $Q$ of finite assignments and a truth relation $T$
+for those proper layer structures. Check the empty assignment, closure
+under appending one member of the relevant structure, and the finite
+length function. External induction on the true natural numbers proves
+that every actual finite assignment occurs. Atomic clauses use actual
+membership and equality. The negation and Boolean clauses are bounded,
+and a quantifier ranges over the displayed small structure. External
+induction on formula construction therefore proves that $T$ is its
+actual satisfaction relation. Induction on $\beta$ now proves the
+hierarchy diagram and both directions of Def. Thus a new spurious
+hierarchy cannot pass the check.
+
+The data may be encoded as flat membership-incidence records indexed by
+formula numbers, finite positions and structure elements. Pairing depth
+is then fixed, rather than growing with formula arity. A finite
+subformula table for a fixed formula is obtained by finitely many Def
+constructions; its full relation can be specified as one definable
+incidence table. The hierarchy and truth diagrams are constructed
+together by external induction, with one fixed finite reserve for these
+flat records. At a limit $\lambda$, any particular proper-layer
+construction has $\beta+N<\lambda$ for a finite $N$. This last assertion
+does not place the endpoint's full truth in its own layer or in its
+immediate successor.
+\end{proof}
+
+Let $M_r=L_{\lambda+r}$ and $A=L_\lambda$, for one fixed actual
+$r<\omega$ and limit $\lambda>\omega$. A code in $A$ specifies a finite
+tree of Def descriptions. Its evaluation $\operatorname{ev}_r$ is onto
+$M_r$: an element of $A$ codes itself, and at each successor every
+definable subset has a formula and finitely many earlier parameters.
+All finite lists of these codes belong to $A$. Evaluation and the
+atomic relations have correct definitions using the proper layer
+structures. In an external structure containing $M_r$, relativizing
+those definitions to $M_r$ gives bounded checks.
+
+\begin{lemma}[The tight truth tables]\label{lem:partial-truth}
+The coded equality and membership relations, and coded truth for
+$\Delta_0$ and $\exists\Delta_0$ formulas over $M_r$, belong separately
+to $M_{r+1}$. Their correctness has a bounded check on the code domain.
+For each fixed first-order formula, its finite subformula truth table
+also belongs to $M_{r+1}$. These assertions do not put one total
+first-order satisfaction table for $M_r$ in $M_{r+1}$.
+\end{lemma}
+\begin{proof}
+For $r=0$, choose a proper transitive layer containing the finitely
+many parameters of a bounded query. Its correct layer and truth records
+fit below $\lambda$ by Lemma~\ref{lem:layers}. Bounded absoluteness
+decides the query. Both truth and falsity have such finite positive
+certificates. Existential witnesses can be specified by finitely many
+codes in $A$. The relations are therefore definable over $A$, and their
+tables belong to $\operatorname{Def}(A)$.
+
+For $r>0$, expand each top-layer object into its definition over
+$M_{r-1}$. A variable bounded by such an object ranges over $M_{r-1}$.
+Translate equality and membership by substituting those definitions.
+A fixed bounded query becomes a fixed first-order formula over
+$M_{r-1}$. The finite table of this formula and its subformulas belongs
+to $\operatorname{Def}(M_{r-1})=M_r$. A finite syntax trace verifies the
+translation. Truth and falsity of the original query are thus definable
+over $M_r$. For a narrow positive formula, additionally quantify over
+the finite codes of its witnesses, and use the same bounded matrix
+table. This proves the next-level membership of the two partial tables.
+
+For the external check, first verify the atomic code relations by
+relativized evaluation. The Tarski clauses for all bounded formulas
+quantify only over $\omega$, the code domain $A$ and the supplied
+relations. A bounded variable ranges over those codes whose evaluated
+values belong to its bound. The narrow positive table is checked by
+existence of witness codes in $A$ followed by the bounded table. These
+are bounded quantifiers over fixed sets. Since evaluation is onto, the
+checks omit no actual assignment. External syntax induction proves
+their soundness for every candidate table.
+
+For an arbitrary fixed formula, use the same finite-subformula
+construction. Its finitely many relations are definable over $M_r$;
+their flat incidence table belongs to $M_{r+1}$. The statement is
+formula-by-formula. Collecting them all as one total truth set would
+require a further layer and is not part of the lemma.
+\end{proof}
+
+For clarity, full coded satisfaction over $M_r$ belongs to $M_{r+2}$:
+in $M_{r+1}$ it is defined by existence of the correct finite table
+for the queried formula, and a further Def step collects the relation.
+Thus the full truth of $M_{r-1}$ needed to identify $M_r$ lies in
+$M_{r+1}$. Whenever $\lambda+r<H$, this level is contained in $L_H$.
+At a limit $\lambda$, the proper hierarchy and truth diagrams themselves
+are separately definable over $L_\lambda$ and belong to
+$L_{\lambda+1}$. These are the endpoint bounds used in the next lemma.
+
+These distinctions give two exact elementarity checks. For the narrow
+class, supply the correct partial tables at source and target and check
+that the proposed graph preserves their values on all parameter codes.
+For the wider class $B\Sigma_1$, one can instead use
+\begin{equation}\label{eq:4-3}
+ \forall i\in\omega\ \bigl(i\notin\operatorname{Code}(B\Sigma_1)
+ \ \lor\ \exists R_s,R_t\,
+ [\operatorname{FinTruth}_s(i,R_s)\wedge
+  \operatorname{FinTruth}_t(i,R_t)\wedge\operatorname{Match}(i)]\bigr).
+\end{equation}
+Each $R$ is the correct finite table for that formula. Formula (\ref{eq:4-3}) is
+in the bounded positive closure; it must not be silently prenexed into
+$\exists\Delta_0$ in a weak layer. A supplier used with this convention
+must preserve that same class. If the narrow convention is used
+throughout, the partial-table check already has the required form.
+
+\begin{lemma}[Actual maps preserve proper layers]\label{lem:proper-layers}
+An actual positive elementary map $J:L_H\to L_V$ satisfies
+$J(L_\alpha)=L_{J(\alpha)}$ for $\alpha<H$. Its restriction to each
+proper layer is fully elementary. If its critical point is $p>\omega$
+and $J(p)=c$, then $p,c$ are limits and $J$ fixes $L_p$ pointwise.
+In particular $L_p\prec L_c$ is the natural full elementary inclusion.
+\end{lemma}
+\begin{proof}
+Transport a correct proper-layer identification and its relative
+formula records through $J$. Bounded soundness identifies the transported
+layer as the actual constructible layer, not merely an isomorphic
+candidate. Equivalently, its proper hierarchy and Def clauses are
+characterized by the correct small-layer diagram. For a fixed formula
+$\varphi$, relativize every quantifier to the set $L_\alpha$. This is
+a bounded formula in that set and its parameters. Positive elementarity
+therefore gives full elementarity of the actual restriction.
+
+A least moved ordinal above $\omega$ cannot be a successor, because
+successor is definable and its predecessor would already move. The same
+relative characterization shows that its image is a limit. Induct on
+$\beta<p$: lower layers are fixed; every subset at a Def successor has
+a formula and finite fixed parameters, so the defined set is fixed;
+unions handle limits. Thus every member of $L_p$ is fixed. Applying the
+proper-layer assertion at $p$ yields the stated natural inclusion.
+At no point is $J(H)$ formed.
+\end{proof}
+
+The fixed-constructor order restricted to a proper layer is recovered
+by the same hierarchy records: old objects precede new objects, and
+new objects are compared by their first definitions. At a limit, the
+record for any particular initial segment fits in a proper layer with
+finite room. At a finite successor, its code table is defined over the
+last layer by the Def descriptions just constructed. This gives the
+order information used in the next lemma. It compares actual objects;
+the low code order has no mathematical role.

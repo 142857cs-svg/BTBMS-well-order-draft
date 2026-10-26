@@ -1,0 +1,34 @@
+\subsection{The exact completed tower template}\label{sec:tower-template}
+In one-based display notation define
+\[
+ H_{1,m}(q)=(\underbrace{q,\ldots,q}_{m}),\qquad
+ H_{r+1,m}(q)=(q^{H_{r,m}(q+1)}),\qquad
+ V_{r,m}=()(1^{H_{r,m}(2)}).
+\]
+Thus $V_{r,1}=I_{r+1}$. The completed root column has $m$ bare
+entries followed by heads $G_1,\ldots,G_r$. The private column of
+$G_j$ is a full intrinsic image of the root prefix consisting of
+the $m$ bare entries and $G_1,\ldots,G_{j-1}$. The outer target column
+is a full image of the whole root prefix. Every request pairs both
+entry-by-entry, including its recursive private packages.
+
+This is the original completion, not an added saturated table. Induct
+on $j$. A request in the $j$th private package needs exactly the
+equal-height same-parent roots in the earlier root prefix; they are
+already present by the induction hypothesis. No strict candidate is
+needed. Conversely each listed support has an actual reader in that
+private package or in the outer image. All internal packages have the
+same property recursively. Hence the table is completed and has the
+least actual support. Lemma~\ref{lem:replay} identifies it with the
+original completion of $V_{r,m}$.
+
+Only the outer image of the last head is native at its level. Down its
+private chain the last head remains native, ending in the $m$ native
+bare entries. Other heads are virtual; source packages are globally
+virtual but retain their nonempty relative birth templates. This
+distinction explains why removing all globally virtual packages would
+destroy the initialization. For reference, the completed finite shape
+has $2^{r+1}$ columns and $2^{r+1}(m+1)-2$ entries, obtained by doubling
+the preceding prefix and adding the next head. These are shape counts
+only; the ordinal labels are supplied by the joint reflection in
+Lemma~\ref{lem:prefix-init}.

@@ -1,0 +1,91 @@
+\subsection{The finite path barrier and the state bound}
+\label{sec:path-details}
+The reachability proof uses the following three direct identities of
+the original rightmost operation. For every legal recursive prefix
+$P\spref X$,
+\begin{equation}\label{eq:9-3}
+ \begin{gathered}
+ X[n]\pref X[n+1],\qquad
+ P\pref X[n]\ \text{or}\ X[n]\pref P,\qquad
+ P\pref X[1].
+ \end{gathered}                                                
+\end{equation}
+To verify them, locate the cut of $P$ on the rightmost active branch.
+The general zero case deletes the deepest last column. A positive
+case keeps the prefix before its final bare entry and fills only the
+rightmost hole; increasing the index fills that same hole further.
+An ancestor root does not rewrite the retained prefix. The special
+case deletes the singleton owner-bare column and appends copies of
+the same shortened enclosing entry; index one keeps at least one
+such entry. If index zero removes an enclosing entry entirely, its
+output is below the corresponding prefix cut. Empty-last-column
+deletion is immediate. Comparing the cut with these positions proves
+(\ref{eq:9-3}) by finite recursion on the containing branch.
+
+If $P\pref X$ and a given finite path from $X$ ends at $Y>P$, then
+$P\spref Y$: follow (\ref{eq:9-3}) edge by edge. Once a path reaches $P$ or
+below, strict native decrease prevents its return above $P$. At the
+first crossing below $P$, its output is a recursive prefix of $P$.
+
+\begin{lemma}[Two finite paths]\label{lem:two-paths}
+Suppose $X,Y$ are recursive-prefix comparable, with given finite paths
+$X\to^*H$ and $Y\to^*B$. If $P=H[n]$ and $P<B<H$, then
+$P\spref B$.
+\end{lemma}
+\begin{proof}
+Induct on the sum of the remaining lengths of these two given paths,
+keeping $H,B,P$ fixed. If $X=Y=H$, the first child $V$ on the path
+to $B$ is above $P$. The children of $H$ are prefix comparable by
+(\ref{eq:9-3}), so $P\spref V$, and the preceding finite-path barrier gives
+$P\spref B$. If $X=Y\ne H$, neither endpoint is the common starting
+point: $B<H\le X$. Take the first edge on both paths; the new starting
+points are children of one node and hence prefix comparable. The
+remaining total length decreases.
+
+If $X\spref Y$, then $B<H\le X$. On the given path from $Y$ to $B$,
+take its first point $Y'\le X$. The barrier gives $Y'\pref X$.
+At least one edge has been consumed, so apply the induction hypothesis
+to the remaining paths. If $Y\spref X$ and $H>Y$, the path barrier
+first gives $Y\spref H$. Since $P<B\le Y$, (\ref{eq:9-3}) at $H\to P$
+forces $P\spref Y$, and the path to $B$ gives the conclusion. If
+instead $H\le Y$, take the first $X'\le Y$ on the path from $X$
+to $H$. Again $X'\pref Y$ and a positive number of edges is consumed.
+All unfinished branches strictly reduce the stated natural-number
+measure. No well-ordering of the descendant relation is assumed.
+\end{proof}
+
+For the size bound, the legal recursive prefixes of a finite $K$ form
+a chain of at most $\nu(K)+1$ members: each possible stopping place
+corresponds to a column or entry in depth-first order, and invalid empty
+private-column stops are omitted. If $K<X$ is not itself a prefix,
+let $\rho_K(X)$ be the least legal recursive prefix of $X$ above $K$.
+At the first difference of $X$ and $K$, retain just that difference
+and truncate everything later. A differing parent needs its entry
+with empty height. If $K$ ends first, retain one additional entry,
+one additional top-level empty column, or a private column and its
+first bare entry. Thus
+\begin{equation}\label{eq:9-4}
+          K<\rho_K(X)\pref X,\qquad
+          \nu(\rho_K(X))\le\nu(K)+2.                       
+\end{equation}
+The earlier containing framework was already counted in $K$.
+
+Put $N=\nu(K)$. If a compressed state $U$ is a limit type, its
+$N+2$ children with indices $0,\ldots,N+1$ are distinct: each
+additional general copy adds a nonempty native window, and each
+special copy adds a shortened entry. If they were all below $K$
+without a rejecting nonprefix crossing, they would be $N+2$ distinct
+strict prefixes of $K$, contradicting its prefix bound. For a successor
+type, the deletion child is the immediate predecessor, so it is at
+least $K$. This proves the finite child bound used in
+Lemma~\ref{lem:reachability}.
+
+Finally, every parent in a scope-correct expression of at most $N+2$
+objects refers to a visible earlier column; its address is bounded by
+the total number of columns. There are finitely many tree shapes and
+such address assignments. Compressed states therefore range over a
+fixed finite set and strictly decrease, proving termination of the
+search. If a rejecting crossing occurred for actual $K$ and $V$, their
+given histories start at prefix-comparable towers; apply
+Lemma~\ref{lem:two-paths} to that crossing to contradict rejection.
+This establishes reachability without using any ordinal labels.

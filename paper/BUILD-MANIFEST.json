@@ -1,0 +1,50 @@
+{
+  "edition": "concise",
+  "date": "2026-10-26",
+  "base_checkpoint": "v139",
+  "previous_page_count": 989,
+  "page_count": 38,
+  "inputs_sha256": {
+    "btbms-complete-proof/inputs/current.zh-CN.md": "51354788034b7963dcc5c608a69a8acf2fb232093d243c1ff32004d17cf20a56",
+    "btbms-complete-proof/inputs/legacy.zh-CN.md": "9cccb7253e8ed82d574f341796a1f2774f85321cc99ac626f1d56f9f8284cfa9",
+    "btbms-complete-proof/inputs/suggested-proof-clarifications.patch": "b74de9b6ee5095640350dcaa100f682cb618022de62a01f139f6a581046cb4b9",
+    "btbms-complete-proof/BTBM-pinned.ts": "272076ae4e7ca2d38d9bc32a99f88ef586c04a83834d971ae35fe8d8da33a45b",
+    "btbms-complete-proof/main-proof.tex": "738d1f9e8199bf19612cd371aa6a792f15c6fc3ea18931313f24b34693c2d58f"
+  },
+  "unchanged_native_source": true,
+  "build_command": "bash build.sh",
+  "engine": "pdfLaTeX; TeX Live 2023",
+  "proof_status": "Edited research proof manuscript; not independently or formally verified",
+  "historical_notebooks_needed_to_build": false,
+  "authoring_changes": [
+    "General arguments consolidated into the article; historical appendix closure omitted.",
+    "Three previous amendments retained explicitly.",
+    "Actual graph-code coverage uses source Gen and independently established finite-term transport.",
+    "Automatic theorem and equation cross-references; embedded Latin Modern fonts."
+  ],
+  "input_hash_note": "Input notebooks are preserved separately; not included in the concise release.",
+  "release_files_sha256": {
+    "connection-details.tex": "71b261163c159b04041d7882f174e6b3b19cba3c81677afe665736add7fef734",
+    "fixed-description.tex": "ea97b098a83ea13e4850a7b891052fefb40caf366a0c7160cec429ae2cf4259d",
+    "main-text.tex": "167178b6f98fac4cf4ba7739f07b4f72b5009afa9859272c24c8043dc2595dc9",
+    "paper.tex": "3b5406d8da1800be0d2339ca736f7cfff88a3423739f3f20446c7bd17d89f42c",
+    "path-details.tex": "69f1f9faa7ef7ae31a50cc50cbe121e5e9b4671a2253a4f60b03fc8cd541fe78",
+    "point-details.tex": "5d4b00937c4008e2d6d4f45c53e5775a794e183622542e48f0440932054f980e",
+    "source-notes.tex": "a6f5ef80429dd70d611fbd97ff681bc5e642813c51d4771e6b87a65961f91696",
+    "special-details.tex": "6d31b01744e6cc284d0d933b5844a3b653dfa4c2b760ada9066931559301f31a",
+    "tower-details.tex": "f5439efca4465d81e2e2bd9318d766b28dc3ae038705a74234390cee4684c74a",
+    "truth-coding.tex": "1d48b2193411857dc3bb399435b0d9c29bd55318a136e3f7d5035cdc6b3268c7",
+    "windows.tex": "7655a4e18dc2b6b226e9c8d57df9a645cb31b5c7629e60ed11c2fa1a37b6f1aa",
+    "word-calculus.tex": "dec5fb48aa16068b88e38780d9c302d0830d60858def6415a987d806d3f94a55",
+    "README.md": "0754a4c475182cb5458745607940adf92c3493a26f8765ad60ec079e81782bc2",
+    "build.sh": "d0cf3a97976ae7ec987b029929744fe8b14f931d79d38a07276307c14652f7f3",
+    "validate_document.py": "4c2374337b3eb45f90b813f077fa9cf24ccfc7e7d686208b2e1e2879671ebf07",
+    "package_release.py": "ba5b3bbf5023ba7076bd2dd5dc4767f0f1fb5772e40a27b62aff0671bcb4b0e1",
+    "native-definition.ts": "db375e1f52e3ca6dab14409757d39f3fcbb0eaf6b7f9f45b9be34360bf4b5f39",
+    "BTBM-pinned.ts": "272076ae4e7ca2d38d9bc32a99f88ef586c04a83834d971ae35fe8d8da33a45b",
+    "SOURCE-CONCORDANCE.csv": "c2737917a95e8e6802eb2772d581ea313a00fff0db1d13de19e81c3d3f98e6c9",
+    "VALIDATION.json": "83a1aa1db3254ea3058463e05df9cb238a324dc50e9fe6afc6722d39490e713e",
+    "paper.pdf": "778aec1d9af3345fa51af9ec7bd1866175890bc4ee220605a0f1970023ae5bf4"
+  },
+  "pdf_sha256": "778aec1d9af3345fa51af9ec7bd1866175890bc4ee220605a0f1970023ae5bf4"
+}

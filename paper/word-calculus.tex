@@ -1,0 +1,99 @@
+\subsection{Finite scan identities}\label{sec:word-calculus}
+It is useful to distinguish the comparison of finite words from the
+insertion of support. For words $R,W$ over any linearly ordered alphabet,
+let $\res(R,W)$ be the root suffix left by the three comparison rules:
+delete the smaller head, or both equal heads, and stop when one word is
+empty. A missing root leaves no residual parent. All parent chains below
+are stopped at that point or at a parentless head.
+
+\begin{lemma}[Absorption and residuals]\label{lem:word}
+Scanning successive target words composes:
+\[
+ \res(R,UV)=\res(\res(R,U),V).
+\]
+If $x<y$, the target word $xy$ has the same action as $y$ on every
+root word. Consequently every target word has a unique weakly decreasing
+normal form obtained by repeatedly removing a letter that precedes a
+strictly larger letter. The residual action depends only on this normal
+form. A lower same-parent root inserted immediately before a higher root
+does not change the parent of the first residual head.
+\end{lemma}
+\begin{proof}
+The first identity is the scan with its target pointer paused between
+$U$ and $V$. For $xy$, roots below $x$ are removed in either scan. If
+the next root equals $x$, consuming it before scanning $y$ has the same
+effect as removing it as a smaller root during the $y$ scan. If the next
+root lies strictly between $x$ and $y$, the first target is removed and
+that root is then removed by $y$. If it is at least $y$, the first
+target disappears without affecting it. These are all cases.
+
+A stack algorithm gives the normal form: read from left to right,
+remove terminal stack letters smaller than the new letter, and append
+the new letter. The stack is weakly decreasing; the preceding absorption
+identity proves that its residual action is unchanged. Its letters are
+exactly the right-to-left weak maxima, with their multiplicities, so it
+is independent of the order of removals.
+
+For the last assertion compare the scan with and without the inserted
+root $V<R$. If the two residual suffixes differ, one starts at $V$ and
+the other at $R$. Their first parents agree. If $V$ is removed, the
+pointers agree again; if a target removes $R$ by equality, it has already
+removed $V$. This proves parent neutrality, not equality of the two
+residual words. Repeating it handles a finite virtual group before one
+right carrier.
+\end{proof}
+
+In particular, with $0$ the empty height, if scanning $W$ against
+$U0$ leaves exactly its final $0$, then
+\begin{equation}\label{eq:2-1}
+             \nf(U)\le\nf(W)<\nf(U)0,
+             \qquad \nf(W)=\nf(U).                 
+\end{equation}
+The equality follows because no weakly decreasing finite word lies
+strictly between a word and that word followed by the least letter.
+This identity handles a bare edge newly created by Cut. It does not
+require the letters of $U$ to be bare.
+
+For completed scans, record also a Boolean tag. A strict targetOnly
+event begins a coverage block only at the least legal candidate; further
+targets may be consumed by that same root while the tag persists. A
+rootOnly or nonfinal both event resets the tag. This is a statement about
+actual positions in the completed word, so repeated equal heights are
+not identified as one occurrence.
+
+\begin{lemma}[Composition of qualified scans]\label{lem:composition}
+Suppose the legal root classes are nested, and their least-candidate
+operators satisfy $C_aC_b=C_a$. For three compatible completed prefixes,
+the scan from the first to the third is the composition of their actual
+consumer maps through the second. If the two endpoint heights are equal,
+every segment of the corresponding consumer chain is a both event.
+\end{lemma}
+\begin{proof}
+Partition the middle word into consecutive blocks with one consumer in
+the first word, and the last word into consecutive blocks with one
+consumer in the middle word. Follow the first unprocessed target in
+the last word. Let $B$ be its middle consumer and $A$ the first-word
+consumer of $B$. Every first-word root before $A$ has either been removed
+by an earlier middle target or is strictly below the first target at
+which its block could start. It is likewise removed or passed in the
+composed scan. If $A$ opens coverage, minimality gives
+$A=C_a(C_b(T))=C_a(T)$ at the opening target $T$. Thus no earlier legal
+root can replace $A$.
+
+While the middle consumer remains $B$, the same $A$ continues to cover
+the corresponding last-word block. When $B$ changes, compare the new
+middle head with $A$: a smaller head remains in the block, equality
+ends it by both, and a larger head removes $A$ before the next block.
+These are exactly the three direct-scan events. This is a finite
+induction on the two moving pointers, and does not require either word
+to be sorted. At every consumption the root height is at least the
+target height. If endpoint heights agree, every intermediate inequality
+is an equality. The actual events are therefore both, as asserted.
+\end{proof}
+
+The equality is about completed compatible prefixes. Removing a root
+that is still needed by a retained target destroys its premise.
+Conversely, after deleting an unused virtual package, replay and minimal
+support in Lemma~\ref{lem:replay} re-establish the same premise. This is
+why support pruning is performed through birth records and actual
+consumers, rather than by erasing all virtual entries at once.
